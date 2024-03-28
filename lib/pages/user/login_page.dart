@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travelmaker/pages/home_page.dart';
+import 'package:travelmaker/src/app.dart';
 import 'package:travelmaker/src/components/custom_elevated_button.dart';
 import 'package:travelmaker/src/components/custom_text_form_field.dart';
 import 'package:travelmaker/util/validator_util.dart';
@@ -52,7 +53,7 @@ class LoginPage extends StatelessWidget {
               // null check 필수(절대 null이 아님)
               // validate가 실행되면 방금 적은 value 값이 저장됨
               if(_formKey.currentState!.validate()) {
-                Get.to(const HomePage());
+                Get.off(const App());
               }
             },
           ),

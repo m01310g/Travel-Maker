@@ -16,9 +16,9 @@ class CustomTextFormField extends StatelessWidget {
         // 경우에 따라 받는 값이 다르기 때문에 함수를 외부에서 받아야 함
           validator: funValidator,
           // obscureText = 텍스트 가림 -> 비밀번호 못 보게 가림
-          obscureText: hint == "Password" ? true : false,
+          obscureText: hint == "비밀번호를 입력하세요" ? true : false,
           decoration: InputDecoration(
-            hintText: "Enter $hint",
+            hintText: "$hint",
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
             ),

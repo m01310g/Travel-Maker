@@ -56,7 +56,7 @@ class JoinPage extends StatelessWidget {
               // null check 필수(절대 null이 아님)
               // validate가 실행되면 방금 적은 value 값이 저장됨
               if(_formKey.currentState!.validate()) {
-                Get.to(LoginPage());
+                Get.off(LoginPage());
               }
             }
           )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:travelmaker/pages/user/join_page.dart';
 import 'package:travelmaker/src/app.dart';
 import 'package:travelmaker/src/binding/init_binding.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
 
       // controller를 instance로 설정
       initialBinding: InitBinding(),
-      home: const App(),
+      home: App(),
     );
   }
 }

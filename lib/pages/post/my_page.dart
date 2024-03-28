@@ -23,11 +23,11 @@ class _MyPageState extends State<MyPage> {
         body: Column(
           children: [
             Align(
-              alignment: Alignment(-0.5, -0.5),
+              alignment: Alignment(-0.95, -0.5),
               child: Container(
                 constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.width,
-                  minWidth: MediaQuery.of(context).size.width,
+                  minHeight: MediaQuery.of(context).size.width / 6,
+                  minWidth: MediaQuery.of(context).size.width / 6,
                 ),
                 child: GestureDetector(
                   onTap: () {
@@ -48,7 +48,7 @@ class _MyPageState extends State<MyPage> {
                       onTap: () {
                         Get.to(const MyPostList());
                       },
-                      title: const Text("내가 올린 글"),
+                      title: const Text("나의 일정"),
                     );
                   },
                   separatorBuilder: (BuildContext context,
