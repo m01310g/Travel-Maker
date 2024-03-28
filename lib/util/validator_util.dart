@@ -1,8 +1,8 @@
 import 'package:validators/validators.dart';
 
-/***
+/*
     funValidator에서 return하는 것 생성
- ***/
+*/
 
 Function validateID = () => (String? value) {
   if(value!.isEmpty) {

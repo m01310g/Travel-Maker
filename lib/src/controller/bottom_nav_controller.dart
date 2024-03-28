@@ -4,9 +4,9 @@
  */
 
 import 'package:get/get.dart';
-import 'package:travelmaker/pages/upload_page.dart';
+import 'package:travelmaker/pages/post/plan_page.dart';
 
-enum PageName{ HOME, SEARCH, UPLOAD, ACTIVITY, MYPAGE }
+enum PageName{ HOME, REGION_INFO, PLAN, COMMUNITY, MYPAGE }
 
 class BottomNavController extends GetxController {
   RxInt pageIndex = 0.obs;
@@ -14,13 +14,13 @@ class BottomNavController extends GetxController {
   void changeBottomNav(int value, {bool hasGesture = true}) {
     var page = PageName.values[value];
     switch (page) {
-      case PageName.UPLOAD:
+      case PageName.PLAN:
       // Upload라는 새로운 페이지를 만들어줌 => upload.dart
-        Get.to(() => const UploadPage());
+        Get.to(() => const PlanPage());
         break;
       case PageName.HOME:
-      case PageName.SEARCH:
-      case PageName.ACTIVITY:
+      case PageName.REGION_INFO:
+      case PageName.COMMUNITY:
       case PageName.MYPAGE:
         _changePage(value, hasGesture: hasGesture);
         break;

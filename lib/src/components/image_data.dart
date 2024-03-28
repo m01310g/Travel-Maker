@@ -22,13 +22,15 @@ class ImageData extends StatelessWidget {
 class IconsPath {
   static String get logo => 'assets/images/travel_maker_logo.png';
   static String get logoh => 'assets/images/travel_maker_logo_h.png';
-  static String get homeOff => 'assets/images/bottom_nav_home_off_icon.jpg';
-  static String get homeOn => 'assets/images/bottom_nav_home_on_icon.jpg';
-  static String get searchOff => 'assets/images/bottom_nav_search_off_icon.jpg';
-  static String get searchOn => 'assets/images/bottom_nav_search_on_icon.jpg';
+  static String get homeOff => 'assets/images/bottom_nav_home_off_icon.png';
+  static String get homeOn => 'assets/images/bottom_nav_home_on_icon.png';
+  static String get communityOn => 'assets/images/bottom_nav_community_on_icon.png';
+  static String get communityOff => 'assets/images/bottom_nav_community_off_icon.png';
   static String get uploadIcon => 'assets/images/bottom_nav_upload_icon.jpg';
-  static String get activeOff => 'assets/images/bottom_nav_active_off_icon.jpg';
-  static String get activeOn => 'assets/images/bottom_nav_active_on_icon.jpg';
+  static String get regioninfoOff => 'assets/images/bottom_nav_regioninfo_off_icon.png';
+  static String get regioninfoOn => 'assets/images/bottom_nav_regioninfo_on_icon.png';
+  static String get mypageOn => 'assets/images/bottom_nav_mypage_on_icon.png';
+  static String get mypageOff => 'assets/images/bottom_nav_mypage_off_icon.png';
   static String get directMessage => 'assets/images/direct_msg_icon.jpg';
   static String get plusIcon => 'assets/images/plus_icon.png';
   static String get postMoreIcon => 'assets/images/more_icon.jpg';

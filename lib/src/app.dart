@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travelmaker/pages/community_page.dart';
 import 'package:travelmaker/pages/home_page.dart';
+import 'package:travelmaker/pages/post/plan_page.dart';
+import 'package:travelmaker/pages/regioninfo_page.dart';
+import 'package:travelmaker/pages/post/my_page.dart';
 import 'package:travelmaker/src/components/image_data.dart';
 import 'package:travelmaker/src/controller/bottom_nav_controller.dart';
 
@@ -17,12 +20,12 @@ class App extends GetView<BottomNavController> {
               // appBar: AppBar(),
               body: IndexedStack(
                 index: controller.pageIndex.value,
-                children: [
-                  const HomePage(),
-                  Container(child: const Center(child: Text('SEARCH'),),),
-                  Container(child: const Center(child: Text('UPLOAD'),),),
-                  const CommunityPage(),
-                  Container(child: const Center(child: Text('MYPAGE'),),),
+                children: const [
+                  HomePage(),
+                  RegioninfoPage(),
+                  PlanPage(),
+                  CommunityPage(),
+                  MyPage(),
                 ],
               ),
               bottomNavigationBar: BottomNavigationBar(
@@ -40,30 +43,24 @@ class App extends GetView<BottomNavController> {
                     label: 'home',
                   ),
                   BottomNavigationBarItem(
-                    icon: ImageData(IconsPath.searchOff),
-                    activeIcon: ImageData(IconsPath.searchOn),
-                    label: 'search',
+                    icon: ImageData(IconsPath.regioninfoOff),
+                    activeIcon: ImageData(IconsPath.regioninfoOn),
+                    label: 'regioninfo',
                   ),
                   BottomNavigationBarItem(
                     icon: ImageData(IconsPath.uploadIcon),
-                    label: 'upload',
+                    label: 'plan',
                   ),
                   BottomNavigationBarItem(
-                    icon: ImageData(IconsPath.activeOff),
-                    activeIcon: ImageData(IconsPath.activeOn),
-                    label: 'active',
+                    icon: ImageData(IconsPath.communityOff),
+                    activeIcon: ImageData(IconsPath.communityOn),
+                    label: 'community',
                   ),
                   BottomNavigationBarItem(
-                      icon: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    label: 'mypage'
-                  )
+                    icon: ImageData(IconsPath.mypageOff),
+                    activeIcon: ImageData(IconsPath.mypageOn),
+                    label: 'mypage',
+                  ),
                 ],
               ),
             )
