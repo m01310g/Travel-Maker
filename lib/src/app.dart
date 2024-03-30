@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travelmaker/pages/community_page.dart';
 import 'package:travelmaker/pages/home_page.dart';
+<<<<<<< HEAD
 import 'package:travelmaker/pages/post/plan_page.dart';
+=======
+import 'package:travelmaker/pages/plan_page.dart';
+>>>>>>> efe4b1099459ea971b874ae7d56a9ee142b8cd1a
 import 'package:travelmaker/pages/region_info_page.dart';
 import 'package:travelmaker/pages/post/my_page.dart';
 import 'package:travelmaker/src/components/image_data.dart';

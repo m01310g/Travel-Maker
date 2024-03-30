@@ -5,6 +5,7 @@ class RegioninfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return Scaffold(
       appBar: AppBar(
         title: Text('지역 정보'),
@@ -43,6 +44,10 @@ class RegioninfoPage extends StatelessWidget {
           // 추가 지역에 대한 버튼은 여기에 구현...
         ],
       ),
+=======
+    return Container(
+
+>>>>>>> efe4b1099459ea971b874ae7d56a9ee142b8cd1a
     );
   }
 }
