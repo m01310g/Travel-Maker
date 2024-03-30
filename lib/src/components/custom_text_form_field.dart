@@ -18,7 +18,7 @@ class CustomTextFormField extends StatelessWidget {
           // obscureText = 텍스트 가림 -> 비밀번호 못 보게 가림
           obscureText: hint == "비밀번호를 입력하세요" ? true : false,
           decoration: InputDecoration(
-            hintText: "$hint",
+            hintText: hint,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
             ),

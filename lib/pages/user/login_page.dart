@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:travelmaker/pages/home_page.dart';
 import 'package:travelmaker/src/app.dart';
 import 'package:travelmaker/src/components/custom_elevated_button.dart';
 import 'package:travelmaker/src/components/custom_text_form_field.dart';

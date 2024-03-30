@@ -23,7 +23,7 @@ class _MyPageState extends State<MyPage> {
         body: Column(
           children: [
             Align(
-              alignment: Alignment(-0.95, -0.5),
+              alignment: const Alignment(-0.95, -0.5),
               child: Container(
                 constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.width / 6,
