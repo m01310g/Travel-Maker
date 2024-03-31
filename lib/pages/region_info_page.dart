@@ -33,7 +33,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 수도권 이름
-            Positioned(
+            const Positioned(
               left: 115, // 실제 위치에 맞게 조정
               top: 155, // 실제 위치에 맞게 조정
               child: Text(
@@ -53,7 +53,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 강원도 이름
-          Positioned(
+          const Positioned(
             right: 120, // 실제 위치에 맞게 조정
             top: 140, // 실제 위치에 맞게 조정
             child: Text(
@@ -73,7 +73,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 충청북도 이름
-          Positioned(
+          const Positioned(
             right: 165, // 실제 위치에 맞게 조정
             top: 235, // 실제 위치에 맞게 조정
             child: Text(
@@ -93,7 +93,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 충청남도 이름
-          Positioned(
+          const Positioned(
             left: 90, // 실제 위치에 맞게 조정
             top: 245, // 실제 위치에 맞게 조정
             child: Text(
@@ -113,7 +113,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 전라북도 이름
-          Positioned(
+          const Positioned(
             left: 105, // 실제 위치에 맞게 조정
             top: 335, // 실제 위치에 맞게 조정
             child: Text(
@@ -133,7 +133,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 전라남도 이름
-          Positioned(
+          const Positioned(
             left: 90, // 실제 위치에 맞게 조정
             top: 415, // 실제 위치에 맞게 조정
             child: Text(
@@ -153,7 +153,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 경상북도 이름
-          Positioned(
+          const Positioned(
             right: 80, // 실제 위치에 맞게 조정
             top: 265, // 실제 위치에 맞게 조정
             child: Text(
@@ -173,7 +173,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 경상남도 이름
-          Positioned(
+          const Positioned(
             right: 105, // 실제 위치에 맞게 조정
             top: 380, // 실제 위치에 맞게 조정
             child: Text(
@@ -193,7 +193,7 @@ class RegioninfoPage extends StatelessWidget {
             ),
           ),
           // 제주도 이름
-          Positioned(
+          const Positioned(
             left: 75, // 실제 위치에 맞게 조정
             bottom: 70, // 실제 위치에 맞게 조정
             child: Text(
