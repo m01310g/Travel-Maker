@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class RegioninfoPage extends StatelessWidget {
   const RegioninfoPage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -13,36 +16,194 @@ class RegioninfoPage extends StatelessWidget {
         children: <Widget>[
           // 대한민국 지도 이미지
           Positioned.fill(
-            child: Image.asset('assets/images/korea_map.jpg',
+            child: Image.asset('assets/images/korea_map2.jpg',
               fit: BoxFit.contain,
             ),
           ),
-          // 각 지역 버튼 배치 예시
-          // 서울
+          // 수도권
           Positioned(
-            left: 50, // 실제 위치에 맞게 조정 필요
-            top: 100, // 실제 위치에 맞게 조정 필요
+            left: 115, // 실제 위치에 맞게 조정
+            top: 125, // 실제 위치에 맞게 조정
             child: IconButton(
               icon: Icon(Icons.location_pin),
               onPressed: () {
-                print('서울 클릭!');
+                print('수도권 클릭!');
               },
             ),
           ),
-          // 부산
+          // 수도권 이름
+            Positioned(
+              left: 115, // 실제 위치에 맞게 조정
+              top: 155, // 실제 위치에 맞게 조정
+              child: Text(
+                '수도권',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          // 강원도
           Positioned(
-            left: 50, // 실제 위치에 맞게 조정 필요
-            top: 200, // 실제 위치에 맞게 조정 필요
+            right: 120, // 실제 위치에 맞게 조정
+            top: 110, // 실제 위치에 맞게 조정
             child: IconButton(
               icon: Icon(Icons.location_pin),
               onPressed: () {
-                print('부산 클릭!');
+                print('강원도 클릭!');
               },
             ),
           ),
-          // 추가 지역에 대한 버튼은 여기에 구현...
+          // 강원도 이름
+          Positioned(
+            right: 120, // 실제 위치에 맞게 조정
+            top: 140, // 실제 위치에 맞게 조정
+            child: Text(
+              '강원도',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 충청북도
+          Positioned(
+            left: 170, // 실제 위치에 맞게 조정
+            top: 200, // 실제 위치에 맞게 조정
+            child: IconButton(
+              icon: Icon(Icons.location_pin),
+              onPressed: () {
+                print('충청북도 클릭!');
+              },
+            ),
+          ),
+          // 충청북도 이름
+          Positioned(
+            right: 165, // 실제 위치에 맞게 조정
+            top: 235, // 실제 위치에 맞게 조정
+            child: Text(
+              '충청북도',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 충청남도
+          Positioned(
+            left: 105, // 실제 위치에 맞게 조정
+            top: 210, // 실제 위치에 맞게 조정
+            child: IconButton(
+              icon: Icon(Icons.location_pin),
+              onPressed: () {
+                print('충청남도 클릭!');
+              },
+            ),
+          ),
+          // 충청남도 이름
+          Positioned(
+            left: 90, // 실제 위치에 맞게 조정
+            top: 245, // 실제 위치에 맞게 조정
+            child: Text(
+              '충청남도',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 전라북도
+          Positioned(
+            left: 115, // 실제 위치에 맞게 조정
+            top: 300, // 실제 위치에 맞게 조정
+            child: IconButton(
+              icon: Icon(Icons.location_pin),
+              onPressed: () {
+                print('전라북도 클릭!');
+              },
+            ),
+          ),
+          // 전라북도 이름
+          Positioned(
+            left: 105, // 실제 위치에 맞게 조정
+            top: 335, // 실제 위치에 맞게 조정
+            child: Text(
+              '전라북도',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 전라남도
+          Positioned(
+            left: 97, // 실제 위치에 맞게 조정
+            top: 380, // 실제 위치에 맞게 조정
+            child: IconButton(
+              icon: Icon(Icons.location_pin),
+              onPressed: () {
+                print('전라남도 클릭!');
+              },
+            ),
+          ),
+          // 전라남도 이름
+          Positioned(
+            left: 90, // 실제 위치에 맞게 조정
+            top: 415, // 실제 위치에 맞게 조정
+            child: Text(
+              '전라남도',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 경상북도
+          Positioned(
+            right: 90, // 실제 위치에 맞게 조정
+            top: 230, // 실제 위치에 맞게 조정
+            child: IconButton(
+              icon: Icon(Icons.location_pin),
+              onPressed: () {
+                print('경상북도 클릭!');
+              },
+            ),
+          ),
+          // 경상북도 이름
+          Positioned(
+            right: 80, // 실제 위치에 맞게 조정
+            top: 265, // 실제 위치에 맞게 조정
+            child: Text(
+              '경상북도',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 경상남도
+          Positioned(
+            right: 115, // 실제 위치에 맞게 조정
+            top: 345, // 실제 위치에 맞게 조정
+            child: IconButton(
+              icon: Icon(Icons.location_pin),
+              onPressed: () {
+                print('경상남도 클릭!');
+              },
+            ),
+          ),
+          // 경상남도 이름
+          Positioned(
+            right: 105, // 실제 위치에 맞게 조정
+            top: 380, // 실제 위치에 맞게 조정
+            child: Text(
+              '경상남도',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // 제주도
+          Positioned(
+            left: 77, // 실제 위치에 맞게 조정
+            bottom: 80, // 실제 위치에 맞게 조정
+            child: IconButton(
+              icon: Icon(Icons.location_pin),
+              onPressed: () {
+                print('제주도 클릭!');
+              },
+            ),
+          ),
+          // 제주도 이름
+          Positioned(
+            left: 75, // 실제 위치에 맞게 조정
+            bottom: 70, // 실제 위치에 맞게 조정
+            child: Text(
+              '제주도',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
+
