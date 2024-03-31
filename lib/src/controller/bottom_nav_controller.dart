@@ -4,11 +4,7 @@
  */
 
 import 'package:get/get.dart';
-<<<<<<< HEAD
-import 'package:travelmaker/pages/post/plan_page.dart';
-=======
 import 'package:travelmaker/pages/plan_page.dart';
->>>>>>> efe4b1099459ea971b874ae7d56a9ee142b8cd1a
 
 enum PageName{ HOME, REGION_INFO, PLAN, COMMUNITY, MYPAGE }
 

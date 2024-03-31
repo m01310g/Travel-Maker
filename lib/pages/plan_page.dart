@@ -7,13 +7,13 @@ class PlanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Align(
+      body: const Align(
         alignment: Alignment.topCenter,
-
         child: SearchBar(
           trailing: [Icon(Icons.search)],
-          constraints: BoxConstraints(maxWidth: 350, minHeight: 56),
-          hintText: "어디로 떠나시나요?",),
+          constraints: BoxConstraints(maxWidth: 360, minHeight: 56),
+          hintText: "어디로 떠나시나요?",
+        ),
       ),
     );
   }

@@ -5,9 +5,9 @@ class RegioninfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('지역 정보'),
       ),
       body: Stack(
@@ -24,7 +24,7 @@ class RegioninfoPage extends StatelessWidget {
             left: 50, // 실제 위치에 맞게 조정 필요
             top: 100, // 실제 위치에 맞게 조정 필요
             child: IconButton(
-              icon: Icon(Icons.location_pin),
+              icon: const Icon(Icons.location_pin),
               onPressed: () {
                 print('서울 클릭!');
               },
@@ -35,7 +35,7 @@ class RegioninfoPage extends StatelessWidget {
             left: 50, // 실제 위치에 맞게 조정 필요
             top: 200, // 실제 위치에 맞게 조정 필요
             child: IconButton(
-              icon: Icon(Icons.location_pin),
+              icon: const Icon(Icons.location_pin),
               onPressed: () {
                 print('부산 클릭!');
               },
@@ -44,10 +44,6 @@ class RegioninfoPage extends StatelessWidget {
           // 추가 지역에 대한 버튼은 여기에 구현...
         ],
       ),
-=======
-    return Container(
-
->>>>>>> efe4b1099459ea971b874ae7d56a9ee142b8cd1a
     );
   }
 }
