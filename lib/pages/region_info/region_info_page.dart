@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:travelmaker/pages/region_info/metro_area.dart';
 
 class RegioninfoPage extends StatelessWidget {
   const RegioninfoPage({super.key});
@@ -28,7 +30,7 @@ class RegioninfoPage extends StatelessWidget {
             child: IconButton(
               icon: const Icon(Icons.location_pin),
               onPressed: () {
-                print('수도권 클릭!');
+                Get.to(MetroArea());
               },
             ),
           ),
@@ -47,9 +49,7 @@ class RegioninfoPage extends StatelessWidget {
             top: 110, // 실제 위치에 맞게 조정
             child: IconButton(
               icon: const Icon(Icons.location_pin),
-              onPressed: () {
-                print('강원도 클릭!');
-              },
+              onPressed: () {},
             ),
           ),
           // 강원도 이름
@@ -67,9 +67,7 @@ class RegioninfoPage extends StatelessWidget {
             top: 200, // 실제 위치에 맞게 조정
             child: IconButton(
               icon: Icon(Icons.location_pin),
-              onPressed: () {
-                print('충청북도 클릭!');
-              },
+              onPressed: () {},
             ),
           ),
           // 충청북도 이름
@@ -87,9 +85,7 @@ class RegioninfoPage extends StatelessWidget {
             top: 210, // 실제 위치에 맞게 조정
             child: IconButton(
               icon: Icon(Icons.location_pin),
-              onPressed: () {
-                print('충청남도 클릭!');
-              },
+              onPressed: () {},
             ),
           ),
           // 충청남도 이름
