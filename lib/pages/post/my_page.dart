@@ -18,6 +18,7 @@ class _MyPageState extends State<MyPage> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
+          centerTitle: true,
           title: const Text("마이페이지"),
         ),
         body: Column(
