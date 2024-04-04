@@ -1,7 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:travelmaker/pages/region_info/chungbuk_info.dart';
+import 'package:travelmaker/pages/region_info/chungnam_info.dart';
+import 'package:travelmaker/pages/region_info/gangwon_info.dart';
+import 'package:travelmaker/pages/region_info/gyeongbuk_info.dart';
+import 'package:travelmaker/pages/region_info/gyeongnam_info.dart';
+import 'package:travelmaker/pages/region_info/jeju_info.dart';
+import 'package:travelmaker/pages/region_info/jeonbuk_info.dart';
+import 'package:travelmaker/pages/region_info/jeonnam_info.dart';
 import 'package:travelmaker/pages/region_info/metro_area.dart';
 
 class RegioninfoPage extends StatelessWidget {
@@ -13,7 +19,7 @@ class RegioninfoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('지역 정보'),
+        title: const Text('지역 정보'),
       ),
       body: Stack(
         children: <Widget>[
@@ -30,7 +36,7 @@ class RegioninfoPage extends StatelessWidget {
             child: IconButton(
               icon: const Icon(Icons.location_pin),
               onPressed: () {
-                Get.to(MetroArea());
+                Get.to(const MetroArea());
               },
             ),
           ),
@@ -49,7 +55,9 @@ class RegioninfoPage extends StatelessWidget {
             top: 110, // 실제 위치에 맞게 조정
             child: IconButton(
               icon: const Icon(Icons.location_pin),
-              onPressed: () {},
+              onPressed: () {
+                Get.to(const GangwonInfo());
+              },
             ),
           ),
           // 강원도 이름
@@ -66,8 +74,10 @@ class RegioninfoPage extends StatelessWidget {
             left: 170, // 실제 위치에 맞게 조정
             top: 200, // 실제 위치에 맞게 조정
             child: IconButton(
-              icon: Icon(Icons.location_pin),
-              onPressed: () {},
+              icon: const Icon(Icons.location_pin),
+              onPressed: () {
+                Get.to(const ChungbukInfo());
+              },
             ),
           ),
           // 충청북도 이름
@@ -84,8 +94,10 @@ class RegioninfoPage extends StatelessWidget {
             left: 105, // 실제 위치에 맞게 조정
             top: 210, // 실제 위치에 맞게 조정
             child: IconButton(
-              icon: Icon(Icons.location_pin),
-              onPressed: () {},
+              icon: const Icon(Icons.location_pin),
+              onPressed: () {
+                Get.to(const ChungnamInfo());
+              },
             ),
           ),
           // 충청남도 이름
@@ -102,9 +114,9 @@ class RegioninfoPage extends StatelessWidget {
             left: 115, // 실제 위치에 맞게 조정
             top: 300, // 실제 위치에 맞게 조정
             child: IconButton(
-              icon: Icon(Icons.location_pin),
+              icon: const Icon(Icons.location_pin),
               onPressed: () {
-                print('전라북도 클릭!');
+                Get.to(const JeonbukInfo());
               },
             ),
           ),
@@ -122,9 +134,9 @@ class RegioninfoPage extends StatelessWidget {
             left: 97, // 실제 위치에 맞게 조정
             top: 380, // 실제 위치에 맞게 조정
             child: IconButton(
-              icon: Icon(Icons.location_pin),
+              icon: const Icon(Icons.location_pin),
               onPressed: () {
-                print('전라남도 클릭!');
+                Get.to(const JeonnamInfo());
               },
             ),
           ),
@@ -142,9 +154,9 @@ class RegioninfoPage extends StatelessWidget {
             right: 90, // 실제 위치에 맞게 조정
             top: 230, // 실제 위치에 맞게 조정
             child: IconButton(
-              icon: Icon(Icons.location_pin),
+              icon: const Icon(Icons.location_pin),
               onPressed: () {
-                print('경상북도 클릭!');
+                Get.to(const GyeongbukInfo());
               },
             ),
           ),
@@ -162,9 +174,9 @@ class RegioninfoPage extends StatelessWidget {
             right: 115, // 실제 위치에 맞게 조정
             top: 345, // 실제 위치에 맞게 조정
             child: IconButton(
-              icon: Icon(Icons.location_pin),
+              icon: const Icon(Icons.location_pin),
               onPressed: () {
-                print('경상남도 클릭!');
+                Get.to(const GyeongnamInfo());
               },
             ),
           ),
@@ -182,9 +194,9 @@ class RegioninfoPage extends StatelessWidget {
             left: 77, // 실제 위치에 맞게 조정
             bottom: 80, // 실제 위치에 맞게 조정
             child: IconButton(
-              icon: Icon(Icons.location_pin),
+              icon: const Icon(Icons.location_pin),
               onPressed: () {
-                print('제주도 클릭!');
+                Get.to(const JejeInfo());
               },
             ),
           ),

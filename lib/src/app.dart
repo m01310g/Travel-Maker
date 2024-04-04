@@ -1,10 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:travelmaker/pages/community_page.dart';
 import 'package:travelmaker/pages/home_page.dart';
-import 'package:travelmaker/pages/plan_page.dart';
-import 'package:travelmaker/pages/region_info/region_info_page.dart';
+import 'package:travelmaker/pages/post/plan_page.dart';
 import 'package:travelmaker/pages/post/my_page.dart';
+import 'package:travelmaker/pages/region_info/region_info_page.dart';
 import 'package:travelmaker/src/components/image_data.dart';
 import 'package:travelmaker/src/controller/bottom_nav_controller.dart';
 

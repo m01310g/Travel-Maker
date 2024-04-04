@@ -14,9 +14,6 @@ class HomePage extends StatelessWidget {
           width: 300,
         ),
       ),
-      body: Align(
-        
-      ),
     );
   }
 }
