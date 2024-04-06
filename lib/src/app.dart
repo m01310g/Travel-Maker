@@ -22,7 +22,7 @@ class App extends GetView<BottomNavController> {
                 index: controller.pageIndex.value,
                 children: const [
                   HomePage(),
-                  RegioninfoPage(),
+                  RegionInfoPage(),
                   PlanPage(),
                   CommunityPage(),
                   MyPage(),
