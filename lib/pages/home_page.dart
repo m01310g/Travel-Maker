@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: horizontalMargin),
               decoration: BoxDecoration(
-                color: Colors.green,
+                color: Colors.lime,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: TableCalendar(
