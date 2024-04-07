@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class PostDetailPage extends StatefulWidget {
   final Post post;
 
-  const PostDetailPage({required this.post});
+  const PostDetailPage({super.key, required this.post});
 
   @override
   _PostDetailPageState createState() => _PostDetailPageState();
@@ -15,23 +15,23 @@ class _PostDetailPageState extends State<PostDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('게시글 상세'),
+        title: const Text('게시글 상세'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               widget.post.title,
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Text(
               '작성자: ${widget.post.author}',
-              style: TextStyle(fontStyle: FontStyle.italic),
+              style: const TextStyle(fontStyle: FontStyle.italic),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             widget.post.image != null
                 ? Image.file(
               widget.post.image!,
@@ -39,10 +39,10 @@ class _PostDetailPageState extends State<PostDetailPage> {
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             )
-                : SizedBox(), // 이미지가 있으면 표시
-            SizedBox(height: 16.0),
+                : const SizedBox(), // 이미지가 있으면 표시
+            const SizedBox(height: 16.0),
             Text(widget.post.content),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 IconButton(
@@ -97,7 +97,7 @@ class Post {
 class PostButton extends StatelessWidget {
   final Post post;
 
-  const PostButton({required this.post});
+  const PostButton({super.key, required this.post});
 
   @override
   Widget build(BuildContext context) {

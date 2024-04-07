@@ -15,7 +15,7 @@ class _MetroAreaState extends State<MetroArea> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('수도권 지역'),
+        title: const Text('수도권 지역'),
         centerTitle: true, // 타이틀을 중앙에 배치
       ),
       body: Column(
@@ -25,14 +25,14 @@ class _MetroAreaState extends State<MetroArea> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
+                const Text(
                   '지역 선택: ',
                   style: TextStyle(fontSize: 16),
                 ),
                 DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: selectedArea,
-                    icon: Icon(Icons.arrow_downward),
+                    icon: const Icon(Icons.arrow_downward),
                     onChanged: (String? newValue) {
                       setState(() {
                         selectedArea = newValue!;

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: horizontalMargin),
                   child: Row(
@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                           isTappedRanking = !isTappedRanking;
                         }),
                         child: AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                           decoration: BoxDecoration(
                             color: isTappedRanking ? Colors.red : Colors.amber,
                             borderRadius: BorderRadius.circular(20),
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.center,
                           width: sectionWidth,
                           height: 200,
-                          child: Text('현재 관광지 랭킹', style: TextStyle(color: Colors.white)),
+                          child: const Text('현재 관광지 랭킹', style: TextStyle(color: Colors.white)),
                         ),
                       ),
                       GestureDetector(
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                           isTappedSchedule = !isTappedSchedule;
                         }),
                         child: AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                           decoration: BoxDecoration(
                             color: isTappedSchedule ? Colors.purple : Colors.blue,
                             borderRadius: BorderRadius.circular(20),
@@ -70,13 +70,13 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.center,
                           width: sectionWidth,
                           height: 200,
-                          child: Text('내 여행일정 바로가기', style: TextStyle(color: Colors.white)),
+                          child: const Text('내 여행일정 바로가기', style: TextStyle(color: Colors.white)),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),

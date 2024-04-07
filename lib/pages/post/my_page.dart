@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'my_liked_list.dart';
 import 'my_post_list.dart';
 
-void main() => runApp(MaterialApp(home: MyPage()));
+void main() => runApp(const MaterialApp(home: MyPage()));
 
 class UserModel {
   String profileImageUrl;
@@ -14,7 +14,7 @@ class UserModel {
 }
 
 class MyPage extends StatefulWidget {
-  const MyPage({Key? key}) : super(key: key);
+  const MyPage({super.key});
 
   @override
   _MyPageState createState() => _MyPageState();
@@ -32,10 +32,10 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('마이페이지'),
+        title: const Text('마이페이지'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               // 로그아웃 로직 구현
               print('로그아웃');
@@ -55,42 +55,42 @@ class _MyPageState extends State<MyPage> {
                   radius: 50,
                 ),
                 IconButton(
-                  icon: Icon(Icons.edit, size: 15),
+                  icon: const Icon(Icons.edit, size: 15),
                   onPressed: () {
                     _pickImage();
                   },
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(user.nickname, style: TextStyle(fontSize: 20)),
+                Text(user.nickname, style: const TextStyle(fontSize: 20)),
                 IconButton(
-                  icon: Icon(Icons.edit, size: 15,),
+                  icon: const Icon(Icons.edit, size: 15,),
                   onPressed: () {
                     _changeNickname();
                   },
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => MyPostList()),
+                  MaterialPageRoute(builder: (context) => const MyPostList()),
                 );
               },
-              child: Text('내 여행'),
+              child: const Text('내 여행'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => MyLikedList()),
+                  MaterialPageRoute(builder: (context) => const MyLikedList()),
                 );
               },
-              child: Text('찜한 여행'),
+              child: const Text('찜한 여행'),
             ),
           ],
         ),
@@ -114,22 +114,22 @@ class _MyPageState extends State<MyPage> {
       builder: (BuildContext context) {
         String? newNickname;
         return AlertDialog(
-          title: Text('닉네임 변경'),
+          title: const Text('닉네임 변경'),
           content: TextField(
             onChanged: (value) {
               newNickname = value;
             },
-            decoration: InputDecoration(hintText: "새 닉네임을 입력하세요"),
+            decoration: const InputDecoration(hintText: "새 닉네임을 입력하세요"),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('취소'),
+              child: const Text('취소'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('저장'),
+              child: const Text('저장'),
               onPressed: () {
                 if (newNickname != null && newNickname!.isNotEmpty) {
                   setState(() {

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:travelmaker/pages/post/update_page.dart';
-import 'package:travelmaker/src/app.dart';
 
 class DetailPage2 extends StatelessWidget {
 
