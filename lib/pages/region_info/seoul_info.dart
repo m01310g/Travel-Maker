@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class GangwonInfo extends StatefulWidget {
-  const GangwonInfo({Key? key}) : super(key: key);
+class SeoulInfo extends StatefulWidget {
+  const SeoulInfo({Key? key}) : super(key: key);
 
   @override
-  _GangwonInfoState createState() => _GangwonInfoState();
+  _SeoulInfoState createState() => _SeoulInfoState();
 }
 
-class _GangwonInfoState extends State<GangwonInfo> {
+class _SeoulInfoState extends State<SeoulInfo> {
   List<String> regionInfo = [];
 
   @override
@@ -23,7 +23,7 @@ class _GangwonInfoState extends State<GangwonInfo> {
     final apiKey =
         'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
     final url =
-        'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=32&arrange=D&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
+        'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=1&arrange=D&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -42,7 +42,8 @@ class _GangwonInfoState extends State<GangwonInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('강원 정보'),
+        title: const Text('서울 정보'),
+        automaticallyImplyLeading: false, // Remove the back button
       ),
       body: SingleChildScrollView(
         child: Padding(
