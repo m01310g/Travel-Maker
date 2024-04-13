@@ -1,21 +1,69 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class JejeInfo extends StatelessWidget {
-  const JejeInfo({super.key});
+class JejuInfo extends StatefulWidget {
+  const JejuInfo({Key? key}) : super(key: key);
+
+  @override
+  _JejuInfoState createState() => _JejuInfoState();
+}
+
+class _JejuInfoState extends State<JejuInfo> {
+  List<String> regionInfo = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRegionInfo();
+  }
+
+  Future<void> fetchRegionInfo() async {
+    final apiKey =
+        'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
+    final url =
+        'https://api.odcloud.kr/api/15049995/v1/uddi:f2e87fc5-9d8d-4f22-adfc-ae9993d1bbe5?page=1&perPage=10&serviceKey=$apiKey';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(utf8.decode(response.bodyBytes));
+      final items = decodedData['data']; // Access the 'data' field directly
+      setState(() {
+        regionInfo =
+            List<String>.from(items.map((item) => item['장소명'])).toList(); // Use 'item['장소명']' to access place name
+      });
+    } else {
+      throw Exception('Failed to load region information');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Scaffold를 사용하여 기본적인 레이아웃을 제공합니다.
-    // AppBar와 같은 다른 위젯들을 추가하여 확장할 수 있습니다.
     return Scaffold(
-      // AppBar를 추가하여 상단에 제목을 표시할 수 있습니다.
       appBar: AppBar(
         title: const Text('제주 정보'),
+        automaticallyImplyLeading: false, // Remove the back button
       ),
-      // 본문에 Placeholder를 배치합니다.
-      body: const Center(
-        // Placeholder를 Center 위젯으로 감싸줌으로써 화면 중앙에 위치시킵니다.
-        child: Placeholder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: regionInfo.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(regionInfo[index]),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

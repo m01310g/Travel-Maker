@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:travelmaker/pages/region_info/incheon_info.dart';
+import 'package:travelmaker/pages/region_info/seoul_info.dart';
+import 'package:travelmaker/pages/region_info/gyeonggi_info.dart';
+
 
 class MetroArea extends StatefulWidget {
-  const MetroArea({super.key});
+  const MetroArea({Key? key}) : super(key: key);
 
   @override
   State<MetroArea> createState() => _MetroAreaState();
 }
 
 class _MetroAreaState extends State<MetroArea> {
-  final List<String> areas = ['서울', '경기', '인천'];
-  String? selectedArea = '서울'; // 기본값 설정
+  String? selectedArea = '서울'; // Default value
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('수도권 지역'),
-        centerTitle: true, // 타이틀을 중앙에 배치
+        centerTitle: true,
       ),
       body: Column(
         children: <Widget>[
@@ -38,7 +41,7 @@ class _MetroAreaState extends State<MetroArea> {
                         selectedArea = newValue!;
                       });
                     },
-                    items: areas.map<DropdownMenuItem<String>>((String value) {
+                    items: ['서울', '경기', '인천'].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -51,11 +54,39 @@ class _MetroAreaState extends State<MetroArea> {
           ),
           Expanded(
             child: Center(
-              child: Text('선택된 지역: $selectedArea'),
+              child: _buildAreaWidget(selectedArea),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildAreaWidget(String? selectedArea) {
+    switch (selectedArea) {
+      case '서울':
+        return _buildSeoulWidget();
+      case '경기':
+        return _buildGyeonggiWidget();
+      case '인천':
+        return _buildIncheonWidget();
+      default:
+        return const Text('선택된 지역 없음');
+    }
+  }
+
+  Widget _buildSeoulWidget() {
+    // You can customize this widget for Seoul
+    return const SeoulInfo();
+  }
+
+  Widget _buildGyeonggiWidget() {
+    // You can customize this widget for Gyeonggi
+    return const GyeonggiInfo();
+  }
+
+  Widget _buildIncheonWidget() {
+    // You can customize this widget for Incheon
+    return const IncheonInfo();
   }
 }

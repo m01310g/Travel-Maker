@@ -205,7 +205,7 @@ class RegionInfoPage extends StatelessWidget {
             child: IconButton(
               icon: const Icon(Icons.location_pin),
               onPressed: () {
-                Get.to(const JejeInfo());
+                Get.to(const JejuInfo());
               },
             ),
           ),

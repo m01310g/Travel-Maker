@@ -1,21 +1,68 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class ChungbukInfo extends StatelessWidget {
-  const ChungbukInfo({super.key});
+class ChungbukInfo extends StatefulWidget {
+  const ChungbukInfo({Key? key}) : super(key: key);
+
+  @override
+  _ChungbukInfoState createState() => _ChungbukInfoState();
+}
+
+class _ChungbukInfoState extends State<ChungbukInfo> {
+  List<String> regionInfo = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRegionInfo();
+  }
+
+  Future<void> fetchRegionInfo() async {
+    final apiKey =
+        'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
+    final url =
+        'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=8&arrange=D&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(utf8.decode(response.bodyBytes));
+      final items = decodedData['response']['body']['items']['item'];
+      setState(() {
+        regionInfo =
+            List<String>.from(items.map((item) => item['title'])).toList();
+      });
+    } else {
+      throw Exception('Failed to load region information');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Scaffold를 사용하여 기본적인 레이아웃을 제공합니다.
-    // AppBar와 같은 다른 위젯들을 추가하여 확장할 수 있습니다.
     return Scaffold(
-      // AppBar를 추가하여 상단에 제목을 표시할 수 있습니다.
       appBar: AppBar(
         title: const Text('충북 정보'),
       ),
-      // 본문에 Placeholder를 배치합니다.
-      body: const Center(
-        // Placeholder를 Center 위젯으로 감싸줌으로써 화면 중앙에 위치시킵니다.
-        child: Placeholder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: regionInfo.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(regionInfo[index]),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
