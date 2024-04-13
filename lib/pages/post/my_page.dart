@@ -1,10 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'my_liked_list.dart';
 import 'my_post_list.dart';
 
-void main() => runApp(const MaterialApp(home: MyPage()));
+//void main() => runApp(const MaterialApp(home: MyPage()));
 
 class UserModel {
   String profileImageUrl;
@@ -14,7 +15,7 @@ class UserModel {
 }
 
 class MyPage extends StatefulWidget {
-  const MyPage({super.key});
+  const MyPage({Key? key}) : super(key: key);
 
   @override
   _MyPageState createState() => _MyPageState();
@@ -145,6 +146,3 @@ class _MyPageState extends State<MyPage> {
     );
   }
 }
-
-
-
