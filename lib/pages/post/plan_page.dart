@@ -1,109 +1,102 @@
-import 'dart:async';
-import 'dart:developer' show log;
 import 'package:flutter/material.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
 
-class PlanPage extends StatelessWidget {
-  final int? testId;
-
-  const PlanPage({super.key, this.testId});
+class PlanPage extends StatefulWidget {
+  const PlanPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    home: testId == null ? const FirstPage() : TestPage(key: Key("testPage_$testId")),
-  );
+  _PlanPageState createState() => _PlanPageState();
 }
 
-class FirstPage extends StatelessWidget {
-  const FirstPage({Key? key}) : super(key: key);
+class _PlanPageState extends State<PlanPage> {
+  final List<Map<String, dynamic>> messages = [];
+  final TextEditingController _textController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // Return true to allow back navigation
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('First Page'),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              // Pop the current route off the navigation stack
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const TestPage()),
-              );
-            },
-            child: const Text('지도보기'),
-          ),
-        ),
-      ),
-    );
+  void _sendMessage(String message) {
+    setState(() {
+      // 사용자가 보낸 메시지를 오른쪽에 배치하도록 추가합니다.
+      messages.add({
+        'text': message,
+        'isUser': true,
+      });
+
+      // 챗봇 응답을 추가합니다.
+      messages.add({
+        'text': '어디GO: Response to "$message"',
+        'isUser': false,
+      });
+
+      _textController.clear();
+    });
   }
-}
-
-
-
-class TestPage extends StatefulWidget {
-  const TestPage({Key? key}) : super(key: key);
-
-  @override
-  State<TestPage> createState() => TestPageState();
-}
-
-class TestPageState extends State<TestPage> {
-  late NaverMapController _mapController;
-  final Completer<NaverMapController> mapControllerCompleter = Completer();
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final pixelRatio = mediaQuery.devicePixelRatio;
-    final mapSize = Size(mediaQuery.size.width - 32, mediaQuery.size.height - 72);
-    final physicalSize = Size(mapSize.width * pixelRatio, mapSize.height * pixelRatio);
-
-    print("physicalSize: $physicalSize");
-
     return Scaffold(
-      backgroundColor: const Color(0xFF343945),
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text('Map'),
+        title: const Text('어디GO'),
       ),
-      body: Center(
-        child: SizedBox(
-          width: mapSize.width,
-          height: mapSize.height,
-          child: _naverMapSection(),
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final message = messages[index];
+                final isUser = message['isUser'] as bool;
+                final text = message['text'] as String;
+
+                return Align(
+                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: isUser ? Colors.blue : Colors.grey[200],
+                        borderRadius: BorderRadius.circular(12.0),
+                        border: isUser
+                            ? Border.all(color: Colors.blue)
+                            : Border.all(color: Colors.grey),
+                      ),
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                          color: isUser ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    decoration: const InputDecoration(
+                      hintText: '메시지를 입력하세요',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: () {
+                    final message = _textController.text.trim();
+                    if (message.isNotEmpty) {
+                      _sendMessage(message);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
-
-  Widget _naverMapSection() => NaverMap(
-    options: const NaverMapViewOptions(
-      indoorEnable: true,
-      locationButtonEnable: false,
-      consumeSymbolTapEvents: false,
-    ),
-    onMapReady: (controller) async {
-      _mapController = controller;
-      mapControllerCompleter.complete(controller);
-      log("onMapReady", name: "onMapReady");
-    },
-  );
 }
