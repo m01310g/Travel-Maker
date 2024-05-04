@@ -1,17 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'my_liked_list.dart';
 import 'my_post_list.dart';
 
-//void main() => runApp(const MaterialApp(home: MyPage()));
-
 class UserModel {
-  String profileImageUrl;
+  String profileImagePath;
   String nickname;
 
-  UserModel({required this.profileImageUrl, required this.nickname});
+  UserModel({required this.profileImagePath, required this.nickname});
 }
 
 class MyPage extends StatefulWidget {
@@ -23,7 +20,7 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   UserModel user = UserModel(
-    profileImageUrl: 'https://via.placeholder.com/150',
+    profileImagePath: '', // 초기 프로필 이미지 경로를 빈 값으로 설정
     nickname: '사용자닉네임',
   );
 
@@ -52,9 +49,12 @@ class _MyPageState extends State<MyPage> {
               alignment: Alignment.bottomRight,
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(user.profileImageUrl),
+                  backgroundImage: user.profileImagePath.isNotEmpty
+                      ? FileImage(File(user.profileImagePath)) as ImageProvider // 파일 이미지일 경우
+                      : AssetImage('assets/default_image.png'), // 기본 이미지일 경우
                   radius: 50,
                 ),
+
                 IconButton(
                   icon: const Icon(Icons.edit, size: 15),
                   onPressed: () {
@@ -69,7 +69,7 @@ class _MyPageState extends State<MyPage> {
               children: [
                 Text(user.nickname, style: const TextStyle(fontSize: 20)),
                 IconButton(
-                  icon: const Icon(Icons.edit, size: 15,),
+                  icon: const Icon(Icons.edit, size: 15),
                   onPressed: () {
                     _changeNickname();
                   },
@@ -83,7 +83,7 @@ class _MyPageState extends State<MyPage> {
                   MaterialPageRoute(builder: (context) => const MyPostList()),
                 );
               },
-              child: const Text('내 여행'),
+              child: const Text('내 일정'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -103,11 +103,11 @@ class _MyPageState extends State<MyPage> {
     final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        user.profileImageUrl = pickedFile.path;
+        // 프로필 이미지 경로를 업데이트
+        user.profileImagePath = pickedFile.path;
       });
     }
   }
-
 
   void _changeNickname() {
     showDialog(

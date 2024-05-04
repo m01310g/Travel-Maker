@@ -30,11 +30,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_naver_map: ^1.2.2
   universal_html: ^2.2.4
   flutter_native_splash: ^2.2.7
   table_calendar: ^3.1.1
   http: ^1.2.1
+  flutter_config: ^2.0.2
+  firebase_core: ^2.30.1
+  google_sign_in: ^6.2.1
+  firebase_auth: ^4.19.4
 
 
 
@@ -48,7 +51,7 @@ dependencies:
   validators: ^3.0.0
   cached_network_image: ^3.3.1
   image_picker: ^1.0.7
-  google_maps_flutter: ^2.2.8
+  google_maps_flutter: ^2.6.1
 
 dev_dependencies:
   flutter_test:

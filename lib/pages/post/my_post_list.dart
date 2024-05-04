@@ -9,7 +9,7 @@ class MyPostList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("내 여행"),
+        title: const Text("나의 여행"),
       ),
       body: ListView.separated(
         itemCount: 5,

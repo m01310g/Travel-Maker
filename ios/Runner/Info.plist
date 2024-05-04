@@ -6,6 +6,9 @@
         <string>We need to take a picture!</string>
         <key>NSCameraUsageDescription</key>
         <string>We need to take a picture!</string>
+        <key>GMSApiKey</key>
+        <string>***REMOVED***</string>
+
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>

@@ -1,10 +1,9 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_config (0.0.1):
+    - Flutter
   - flutter_native_splash (0.0.1):
     - Flutter
-  - flutter_naver_map (1.0.0):
-    - Flutter
-    - NMapsMap (= 3.17.0)
   - google_maps_flutter_ios (0.0.1):
     - Flutter
     - GoogleMaps (< 9.0)
@@ -15,9 +14,6 @@ PODS:
     - GoogleMaps/Base
   - image_picker_ios (0.0.1):
     - Flutter
-  - NMapsGeometry (1.0.1)
-  - NMapsMap (3.17.0):
-    - NMapsGeometry
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -27,8 +23,8 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_config (from `.symlinks/plugins/flutter_config/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
-  - flutter_naver_map (from `.symlinks/plugins/flutter_naver_map/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -37,16 +33,14 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - GoogleMaps
-    - NMapsGeometry
-    - NMapsMap
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_config:
+    :path: ".symlinks/plugins/flutter_config/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
-  flutter_naver_map:
-    :path: ".symlinks/plugins/flutter_naver_map/ios"
   google_maps_flutter_ios:
     :path: ".symlinks/plugins/google_maps_flutter_ios/ios"
   image_picker_ios:
@@ -58,13 +52,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_config: f48f0d47a284f1791aacce2687eabb3309ba7a41
   flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
-  flutter_naver_map: b18663bc83c2caaab484c58dccf239a87ebbed1b
   google_maps_flutter_ios: f135b968a67c05679e0a53538e900b5c174b0d99
   GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
   image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
-  NMapsGeometry: 53c573ead66466681cf123f99f698dc8071a4b83
-  NMapsMap: a5b909a31b6f3d27a670f6eb2ddc913c38975474
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
 
