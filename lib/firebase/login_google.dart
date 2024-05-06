@@ -17,7 +17,7 @@ class _GoogleLoginState extends State<GoogleLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('로그인'),
       ),
       body: Center(
         child: ElevatedButton(
@@ -27,13 +27,13 @@ class _GoogleLoginState extends State<GoogleLogin> {
                 // 로그인 성공 시 AuthController를 통해 로그인 상태 갱신
                 Get.find<AuthController>().updateLoginStatus(true);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Google 로그인에 실패했습니다.'),
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('Google 로그인에 실패했습니다. 사용자가 로그인 프로세스를 취소했을 수 있습니다.'),
                 ));
               }
             });
           },
-          child: const Text('Sign in with Google'),
+          child: const Text('구글로 로그인'),
         ),
       ),
     );
@@ -53,14 +53,14 @@ class _GoogleLoginState extends State<GoogleLogin> {
         );
 
         await FirebaseAuth.instance.signInWithCredential(credential);
-        print('Successfully signed in with Google');
+        print('구글로 로그인 성공');
         return true;
       } else {
-        print('User canceled the sign-in process.');
+        print('사용자가 로그인 프로세스를 취소했습니다.');
         return false;
       }
     } catch (e) {
-      print('Error signing in with Google: $e');
+      print('구글 로그인 중 오류 발생: $e');
       return false;
     }
   }

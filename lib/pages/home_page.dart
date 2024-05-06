@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 import 'package:travelmaker/pages/post/detail_page.dart';
@@ -10,7 +9,7 @@ import 'map_page.dart';
 import 'package:travelmaker/pages/post/my_post_list.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     fetchFestivalData();
     _pageController = PageController(initialPage: currentPage);
-    Timer.periodic(Duration(seconds: 5), (Timer timer) {
+    Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (currentPage < festivalItems.length - 1) {
         currentPage++;
       } else {
@@ -37,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       if (_pageController.hasClients) {
         _pageController.animateToPage(
           currentPage,
-          duration: Duration(milliseconds: 500),
+          duration: const Duration(milliseconds: 500),
           curve: Curves.easeIn,
         );
       }
@@ -45,8 +44,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchFestivalData() async {
-    final apiKey = 'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
-    final url = 'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&arrange=D&numOfRows=100&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
+    const apiKey = 'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
+    const url = 'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&arrange=D&numOfRows=100&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
     final response = await http.get(Uri.parse(url));
 
@@ -100,12 +99,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
+          const SliverAppBar(
             floating: false,
             pinned: true,
             elevation: 0,
             backgroundColor: Colors.white,
-            title: const Text(
+            title: Text(
               'Travel Maker',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -216,8 +215,8 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               // '나의 여행' 텍스트를 상단에 추가
-                              Padding(
-                                padding: const EdgeInsets.all(4.0), // 패딩을 줄여서 간격을 좁힘
+                              const Padding(
+                                padding: EdgeInsets.all(4.0), // 패딩을 줄여서 간격을 좁힘
                                 child: Text(
                                   '나의 여행',
                                   style: TextStyle(
@@ -237,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                                     return ListTile(
                                       onTap: () => Get.to(DetailPage(index)), // 글을 누르면 'DetailPage'로 이동
                                       title: Text("제목 $index"), // 예시로 제목 표시
-                                      leading: Icon(Icons.image), // 썸네일로 아이콘 표시
+                                      leading: const Icon(Icons.image), // 썸네일로 아이콘 표시
                                     );
                                   },
                                   separatorBuilder: (BuildContext context, int index) {
@@ -271,7 +270,7 @@ class _HomePageState extends State<HomePage> {
                 firstDay: DateTime.utc(2010, 10, 16),
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: DateTime.now(),
-                calendarStyle: CalendarStyle(
+                calendarStyle: const CalendarStyle(
                   todayDecoration: BoxDecoration(
                     color: Colors.deepPurpleAccent,
                     shape: BoxShape.circle,
@@ -299,7 +298,7 @@ class FestivalDetailPage extends StatelessWidget {
   final double mapx;
   final double mapy;
 
-  const FestivalDetailPage({
+  const FestivalDetailPage({super.key,
     required this.title,
     required this.address,
     required this.image,

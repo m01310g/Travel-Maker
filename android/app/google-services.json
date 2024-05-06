@@ -1,50 +1,34 @@
 {
   "project_info": {
-    "project_number": "722747532883",
-    "firebase_url": "https://travelmaker-3eba1-default-rtdb.firebaseio.com",
-    "project_id": "travelmaker-3eba1",
-    "storage_bucket": "travelmaker-3eba1.appspot.com"
+    "project_number": "340006461251",
+    "project_id": "travelmaker-66f58",
+    "storage_bucket": "travelmaker-66f58.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:722747532883:android:28882dca0dda4ce06f88a6",
+        "mobilesdk_app_id": "1:340006461251:android:da2fc602dff10bf5e599f6",
         "android_client_info": {
           "package_name": "com.example.travelmaker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "722747532883-ea295f1a20fcjk32hkt8ae4927j8pg1c.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.travelmaker",
-            "certificate_hash": "3c0aa7d55062c3a156804e1dd9f2253685f60a0a"
-          }
-        },
-        {
-          "client_id": "722747532883-g04d6joiu2j4m88an39k121jgbg7o1o4.apps.googleusercontent.com",
+          "client_id": "340006461251-7d85m29bhbrdb975q7bqrobdgsltelth.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCMnmazUicihaKQxvAAt1rdcLaMK1LKVw0"
+          "current_key": "AIzaSyDXhYbXGFZ9LOonnxwpca6LoGwjhZ-aCc4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "722747532883-g04d6joiu2j4m88an39k121jgbg7o1o4.apps.googleusercontent.com",
+              "client_id": "340006461251-7d85m29bhbrdb975q7bqrobdgsltelth.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "722747532883-gv57mbjrp5qkl3tdi6pbr2ifuuicjn0f.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.travelmaker"
-              }
             }
           ]
         }

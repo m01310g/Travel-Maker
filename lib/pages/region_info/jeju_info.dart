@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class JejuInfo extends StatefulWidget {
-  const JejuInfo({Key? key}) : super(key: key);
+  const JejuInfo({super.key});
 
   @override
   _JejuInfoState createState() => _JejuInfoState();
@@ -21,8 +21,8 @@ class _JejuInfoState extends State<JejuInfo> {
   }
 
   Future<void> fetchRegionInfo() async {
-    final apiKey = 'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
-    final url = 'https://api.odcloud.kr/api/15049995/v1/uddi:f2e87fc5-9d8d-4f22-adfc-ae9993d1bbe5?page=5&perPage=20&serviceKey=$apiKey';
+    const apiKey = 'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
+    const url = 'https://api.odcloud.kr/api/15049995/v1/uddi:f2e87fc5-9d8d-4f22-adfc-ae9993d1bbe5?page=5&perPage=20&serviceKey=$apiKey';
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -93,7 +93,7 @@ class DetailPage extends StatelessWidget {
   final double latitude;
   final double longitude;
 
-  const DetailPage({
+  const DetailPage({super.key, 
     required this.name,
     required this.address,
     required this.latitude,
@@ -111,12 +111,12 @@ class DetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               '상세 주소:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(address),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -129,10 +129,10 @@ class DetailPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('구글 맵에서 보기'),
+              child: const Text('구글 맵에서 보기'),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               '지도 좌표:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -148,7 +148,7 @@ class MapPage extends StatelessWidget {
   final double latitude;
   final double longitude;
 
-  const MapPage({
+  const MapPage({super.key, 
     required this.latitude,
     required this.longitude,
   });
@@ -169,9 +169,9 @@ class MapPage extends StatelessWidget {
         ),
         markers: {
           Marker(
-            markerId: MarkerId('selectedLocation'),
+            markerId: const MarkerId('selectedLocation'),
             position: initialPosition,
-            infoWindow: InfoWindow(
+            infoWindow: const InfoWindow(
               title: '선택한 위치',
             ),
           ),

@@ -12,7 +12,7 @@ class UserModel {
 }
 
 class MyPage extends StatefulWidget {
-  const MyPage({Key? key}) : super(key: key);
+  const MyPage({super.key});
 
   @override
   _MyPageState createState() => _MyPageState();
@@ -51,7 +51,7 @@ class _MyPageState extends State<MyPage> {
                 CircleAvatar(
                   backgroundImage: user.profileImagePath.isNotEmpty
                       ? FileImage(File(user.profileImagePath)) as ImageProvider // 파일 이미지일 경우
-                      : AssetImage('assets/default_image.png'), // 기본 이미지일 경우
+                      : const AssetImage('assets/default_image.png'), // 기본 이미지일 경우
                   radius: 50,
                 ),
 
