@@ -5,7 +5,7 @@ import 'package:travelmaker/pages/region_info/gyeonggi_info.dart';
 
 
 class MetroArea extends StatefulWidget {
-  const MetroArea({Key? key}) : super(key: key);
+  const MetroArea({super.key});
 
   @override
   State<MetroArea> createState() => _MetroAreaState();

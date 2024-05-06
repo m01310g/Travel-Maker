@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CommunityPage extends StatefulWidget {
-  const CommunityPage({Key? key}) : super(key: key);
+  const CommunityPage({super.key});
 
   @override
   _CommunityPageState createState() => _CommunityPageState();
@@ -148,13 +148,13 @@ class _CommunityPageState extends State<CommunityPage> {
                   maxLines: null,
                 ),
                 const SizedBox(height: 16.0),
-                if (pickedImages != null && pickedImages.isNotEmpty)
+                if (pickedImages.isNotEmpty)
                   ...pickedImages.map((image) {
                     return Image.file(
                       File(image.path),
                       height: 100,
                     );
-                  }).toList(),
+                  }),
                 const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
@@ -184,7 +184,7 @@ class ExpandableText extends StatefulWidget {
   final String text;
   final double maxHeight;
 
-  const ExpandableText({Key? key, required this.text, this.maxHeight = 100.0}) : super(key: key);
+  const ExpandableText({super.key, required this.text, this.maxHeight = 100.0});
 
   @override
   _ExpandableTextState createState() => _ExpandableTextState();
@@ -224,7 +224,7 @@ class _ExpandableTextState extends State<ExpandableText> {
             children: [
               RichText(
                 text: TextSpan(
-                  text: hiddenText ? (firstHalf + "...") : (firstHalf + secondHalf),
+                  text: hiddenText ? ("$firstHalf...") : (firstHalf + secondHalf),
                   style: DefaultTextStyle.of(context).style,
                 ),
                 maxLines: hiddenText ? 3 : null,
@@ -233,7 +233,7 @@ class _ExpandableTextState extends State<ExpandableText> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(hiddenText ? "더 보기" : "접기", style: TextStyle(color: Colors.blue)),
+                    Text(hiddenText ? "더 보기" : "접기", style: const TextStyle(color: Colors.blue)),
                   ],
                 ),
                 onTap: () {
@@ -281,7 +281,7 @@ class Comment {
 class PostDetailPage extends StatefulWidget {
   final Post post;
 
-  const PostDetailPage({Key? key, required this.post}) : super(key: key);
+  const PostDetailPage({super.key, required this.post});
 
   @override
   _PostDetailPageState createState() => _PostDetailPageState();

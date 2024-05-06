@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -6,7 +5,7 @@ class MapPage extends StatelessWidget {
   final double mapx;
   final double mapy;
 
-  const MapPage({
+  const MapPage({super.key, 
     required this.mapx,
     required this.mapy,
   });
@@ -29,9 +28,9 @@ class MapPage extends StatelessWidget {
         markers: {
           // 전달받은 위치를 표시하는 마커를 추가합니다.
           Marker(
-            markerId: MarkerId('selectedLocation'),
+            markerId: const MarkerId('selectedLocation'),
             position: initialPosition,
-            infoWindow: InfoWindow(
+            infoWindow: const InfoWindow(
               title: '선택한 위치',
             ),
           ),

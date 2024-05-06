@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:travelmaker/src/app.dart';
+import 'package:travelmaker/src/controller/bottom_nav_controller.dart'; // BottomNavController import 추가
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  Get.put(BottomNavController()); // BottomNavController 주입
   runApp(const MyApp());
 }
 
@@ -12,61 +18,49 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.put(AuthController());
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AuthChecker(),
-    );
-  }
-}
-
-class AuthChecker extends StatelessWidget {
-  const AuthChecker({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GetX<AuthController>(
-      init: AuthController(),
-      builder: (controller) {
-        if (controller.isLoggedIn.value) {
-          return const HomePage(); // 로그인되어 있으면 홈 페이지로 이동
+      home: Obx(() {
+        final isLoggedIn = Get.find<AuthController>().isLoggedIn.value;
+        if (isLoggedIn) {
+          return const App(); // 로그인 성공 시 APP으로 이동합니다.
         } else {
-          return const GoogleLoginPage(); // 로그인되어 있지 않으면 로그인 페이지로 이동
+          return const GoogleLogin();
         }
-      },
+      }),
     );
   }
 }
 
 class AuthController extends GetxController {
-  // 로그인 상태를 관리하는 변수
   var isLoggedIn = false.obs;
 
-  // 로그인 상태를 갱신하는 메서드
   void updateLoginStatus(bool status) {
     isLoggedIn.value = status;
   }
 }
 
-class GoogleLoginPage extends StatelessWidget {
-  const GoogleLoginPage({Key? key}) : super(key: key);
+class GoogleLogin extends StatelessWidget {
+  const GoogleLogin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Google 로그인'),
+        title: const Text('로그인'),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            // 구글 로그인 진행
             signInWithGoogle().then((success) {
               if (success) {
-                // 로그인 성공 시 AuthController를 통해 로그인 상태 갱신
                 Get.find<AuthController>().updateLoginStatus(true);
+                Get.offAll(const App()); // 로그인 성공 시 HomePage로 이동합니다.
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: const Text('Google 로그인에 실패했습니다.'),
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text('구글 로그인에 실패했습니다.'),
                 ));
               }
             });
@@ -91,31 +85,15 @@ class GoogleLoginPage extends StatelessWidget {
         );
 
         await FirebaseAuth.instance.signInWithCredential(credential);
-        print('Successfully signed in with Google');
+        print('구글로 로그인 성공');
         return true;
       } else {
-        print('User canceled the sign-in process.');
+        print('사용자가 로그인 프로세스를 취소했습니다.');
         return false;
       }
     } catch (e) {
-      print('Error signing in with Google: $e');
+      print('구글 로그인 중 오류 발생: $e');
       return false;
     }
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
-      body: Center(
-        child: const Text('Welcome to Home Page!'),
-      ),
-    );
   }
 }

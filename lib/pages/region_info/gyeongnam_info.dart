@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GyeongnamInfo extends StatefulWidget {
-  const GyeongnamInfo({Key? key}) : super(key: key);
+  const GyeongnamInfo({super.key});
 
   @override
   _GyeongnamInfoState createState() => _GyeongnamInfoState();
@@ -22,7 +22,7 @@ class _GyeongnamInfoState extends State<GyeongnamInfo> {
   }
 
   Future<void> fetchRegionInfo(String areaCode, String regionName) async {
-    final apiKey =
+    const apiKey =
         '***REMOVED***';
     final url =
         'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=$areaCode&arrange=D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
@@ -102,7 +102,7 @@ class DetailPage extends StatelessWidget {
   final double mapx;
   final double mapy;
 
-  const DetailPage({
+  const DetailPage({super.key, 
     required this.title,
     required this.address,
     required this.mapx,
@@ -120,12 +120,12 @@ class DetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               '상세 주소:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(address),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -138,10 +138,10 @@ class DetailPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('구글 맵에서 보기'),
+              child: const Text('구글 맵에서 보기'),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               '지도 좌표:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -157,7 +157,7 @@ class MapPage extends StatelessWidget {
   final double mapx;
   final double mapy;
 
-  const MapPage({
+  const MapPage({super.key, 
     required this.mapx,
     required this.mapy,
   });
@@ -177,9 +177,9 @@ class MapPage extends StatelessWidget {
         ),
         markers: {
           Marker(
-            markerId: MarkerId('selectedLocation'),
+            markerId: const MarkerId('selectedLocation'),
             position: initialPosition,
-            infoWindow: InfoWindow(
+            infoWindow: const InfoWindow(
               title: '선택한 위치',
             ),
           ),

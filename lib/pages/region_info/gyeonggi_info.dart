@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../map_page.dart';
 
 class GyeonggiInfo extends StatefulWidget {
-  const GyeonggiInfo({Key? key}) : super(key: key);
+  const GyeonggiInfo({super.key});
 
   @override
   _GyeonggiInfoState createState() => _GyeonggiInfoState();
@@ -23,7 +23,7 @@ class _GyeonggiInfoState extends State<GyeonggiInfo> {
   }
 
   Future<void> fetchRegionInfo(String contentTypeId, String subCategory) async {
-    final apiKey = '***REMOVED***'; // 여기에 API 키를 입력하세요
+    const apiKey = '***REMOVED***'; // 여기에 API 키를 입력하세요
     String url =
         'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=31&contentTypeId=$contentTypeId&arrange=D&numOfRows=50&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
@@ -118,7 +118,7 @@ class _GyeonggiInfoState extends State<GyeonggiInfo> {
             ),
             // 선택된 카테고리 아래에 파란색 선을 표시합니다.
             AnimatedContainer(
-              duration: Duration(milliseconds: 300), // 애니메이션 지속 시간
+              duration: const Duration(milliseconds: 300), // 애니메이션 지속 시간
               height: isSelected ? 2.0 : 0.0, // 선택된 경우 파란 선 높이
               width: 30.0, // 파란 선 너비
               color: Colors.blue, // 파란 선 색상
@@ -201,7 +201,7 @@ class DetailPage extends StatelessWidget {
   final bool liked;
   final VoidCallback toggleLike;
 
-  const DetailPage({
+  const DetailPage({super.key, 
     required this.title,
     required this.address,
     required this.image,
@@ -232,15 +232,15 @@ class DetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (image != null && image.isNotEmpty)
+              if (image.isNotEmpty)
                 Image.network(image, width: 200, height: 200, fit: BoxFit.cover),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 '상세 주소:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(address),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -253,10 +253,10 @@ class DetailPage extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text('구글 맵에서 보기'),
+                child: const Text('구글 맵에서 보기'),
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 '지도 좌표:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
