@@ -53,6 +53,8 @@ dependencies:
   firebase_core: ^2.30.1
   google_sign_in: ^6.2.1
   cloud_firestore: ^4.17.2
+  firebase_database: ^10.5.5
+  firebase_storage: ^11.7.5
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +66,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+
+flutter_launcher_icons:
+  ios:
+    true
+  android:
+    true
+  image_path: "assets/images/travel_maker_logo.png"
+  remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

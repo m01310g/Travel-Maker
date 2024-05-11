@@ -9,7 +9,7 @@ import 'map_page.dart';
 import 'package:travelmaker/pages/post/my_post_list.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,13 +21,14 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> festivalItems = [];
   int currentPage = 0;
   late PageController _pageController;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
     fetchFestivalData();
     _pageController = PageController(initialPage: currentPage);
-    Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (currentPage < festivalItems.length - 1) {
         currentPage++;
       } else {
@@ -43,6 +44,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
+
   Future<void> fetchFestivalData() async {
     const apiKey = '***REMOVED***';
     const url = 'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&arrange=D&numOfRows=100&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
@@ -53,20 +61,17 @@ class _HomePageState extends State<HomePage> {
       final contentType = response.headers['content-type'];
 
       if (contentType != null && contentType.contains('application/json')) {
-        // JSON 응답을 파싱
         final decodedData = json.decode(utf8.decode(response.bodyBytes));
 
-        // 항목을 필터링하여 이미지가 있는 항목만 포함
         final items = decodedData['response']['body']['items']['item']
             .where((item) => item['firstimage'] != null && item['firstimage'].isNotEmpty)
-            .take(10) // 최대 10개의 항목만 포함
+            .take(10)
             .toList();
 
         setState(() {
           festivalItems = List<Map<String, dynamic>>.from(items);
         });
       } else {
-        // JSON 형식이 아닌 경우 오류 처리
         throw Exception('API 응답 형식이 올바르지 않습니다.');
       }
     } else {
@@ -74,26 +79,19 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
-
   void _navigateToDetail(Map<String, dynamic> festivalItem) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FestivalDetailPage(
-          title: festivalItem['title'],
-          address: festivalItem['addr1'],
-          image: festivalItem['firstimage'],
-          mapx: double.parse(festivalItem['mapx'] ?? '0'),
-          mapy: double.parse(festivalItem['mapy'] ?? '0'),
-        ),
-      ),
-    );
+    Get.to(FestivalDetailPage(
+      title: festivalItem['title'],
+      address: festivalItem['addr1'],
+      image: festivalItem['firstimage'],
+      mapx: double.parse(festivalItem['mapx'] ?? '0'),
+      mapy: double.parse(festivalItem['mapy'] ?? '0'),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    double horizontalMargin = 16.0; // 수평 여백
+    double horizontalMargin = 16.0;
     double buttonWidth = (MediaQuery.of(context).size.width - 2 * horizontalMargin - 16) / 2;
 
     return Scaffold(
@@ -138,61 +136,55 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               SizedBox(
                                 height: 220,
-                                child:
-                                //
-                                // 'HomePage' 클래스의 'build' 메서드 내에 있는 'PageView.builder' 부분 수정
-                                // 'HomePage' 클래스의 'build' 메서드 내에 있는 'PageView.builder' 부분 수정
-                                PageView.builder(
+                                child: PageView.builder(
                                   controller: _pageController,
                                   itemCount: festivalItems.length,
                                   itemBuilder: (context, index) {
-                                    final festivalItem = festivalItems[index];
-                                    return GestureDetector(
-                                      onTap: () => _navigateToDetail(festivalItem),
-                                      child: Card(
-                                        margin: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                                          children: [
-                                            // 축제 제목 표시
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                festivalItem['title'],
-                                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9),
-                                                textAlign: TextAlign.center, // 텍스트를 가운데 정렬
-                                              ),
-                                            ),
-
-                                            // 축제 이미지 표시
-                                            if (festivalItem['firstimage'] != null && festivalItem['firstimage'].isNotEmpty)
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(20.0), // 둥근 모서리 크기 조정
-                                                child: Image.network(
-                                                  festivalItem['firstimage'],
-                                                  width: double.infinity,
-                                                  height: 160,
-                                                  fit: BoxFit.cover, // 이미지를 컨테이너에 맞게 채워줍니다.
-                                                  alignment: Alignment.topCenter, // 이미지를 위쪽부터 정렬
+                                    if (festivalItems.isEmpty) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else {
+                                      final festivalItem = festivalItems[index];
+                                      return GestureDetector(
+                                        onTap: () => _navigateToDetail(festivalItem),
+                                        child: Card(
+                                          margin: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  festivalItem['title'],
+                                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 9),
+                                                  textAlign: TextAlign.center,
                                                 ),
                                               ),
-                                          ],
+                                              if (festivalItem['firstimage'] != null && festivalItem['firstimage'].isNotEmpty)
+                                                ClipRRect(
+                                                  borderRadius: BorderRadius.circular(20.0),
+                                                  child: Image.network(
+                                                    festivalItem['firstimage'],
+                                                    width: double.infinity,
+                                                    height: 160,
+                                                    fit: BoxFit.cover,
+                                                    alignment: Alignment.topCenter,
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
+                                    }
                                   },
-                                )
-
-
-
-
-
+                                ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(width: horizontalMargin), // 두 버튼 사이의 수평 간격 조정
+                      SizedBox(width: horizontalMargin),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -206,37 +198,34 @@ class _HomePageState extends State<HomePage> {
                           duration: const Duration(milliseconds: 500),
                           decoration: BoxDecoration(
                             color: isTappedSchedule ? Colors.deepPurpleAccent : Colors.blueAccent,
-                            borderRadius: BorderRadius.circular(20), // 둥근 모서리 유지
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           alignment: Alignment.center,
                           width: buttonWidth,
-                          height: 230, // 상자의 높이를 충분히 크게 설정
+                          height: 230,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              // '나의 여행' 텍스트를 상단에 추가
                               const Padding(
-                                padding: EdgeInsets.all(4.0), // 패딩을 줄여서 간격을 좁힘
+                                padding: EdgeInsets.all(4.0),
                                 child: Text(
                                   '나의 여행',
                                   style: TextStyle(
-                                    color: Colors.white, // 텍스트 색상
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16, // 텍스트 폰트 크기
+                                    fontSize: 16,
                                   ),
-                                  textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-
-                              // 'MyPostList'의 글들을 표시할 'ListView'
                               Expanded(
                                 child: ListView.separated(
-                                  itemCount: 5, // 예시에서 'MyPostList'의 글 수
+                                  itemCount: 5,
                                   itemBuilder: (context, index) {
                                     return ListTile(
-                                      onTap: () => Get.to(DetailPage(index)), // 글을 누르면 'DetailPage'로 이동
-                                      title: Text("제목 $index"), // 예시로 제목 표시
-                                      leading: const Icon(Icons.image), // 썸네일로 아이콘 표시
+                                      onTap: () => Get.to(DetailPage(index)),
+                                      title: Text("제목 $index"),
+                                      leading: const Icon(Icons.image),
                                     );
                                   },
                                   separatorBuilder: (BuildContext context, int index) {
@@ -248,10 +237,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-
-
-
-
                     ],
                   ),
                 ),
@@ -291,6 +276,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
 class FestivalDetailPage extends StatelessWidget {
   final String title;
   final String address;
@@ -298,7 +284,8 @@ class FestivalDetailPage extends StatelessWidget {
   final double mapx;
   final double mapy;
 
-  const FestivalDetailPage({super.key,
+  const FestivalDetailPage({
+    Key? key,
     required this.title,
     required this.address,
     required this.image,
@@ -314,7 +301,7 @@ class FestivalDetailPage extends StatelessWidget {
           title,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16, // 제목 폰트 사이즈를 줄여줍니다.
+            fontSize: 16,
           ),
           overflow: TextOverflow.ellipsis,
           softWrap: false,
@@ -330,8 +317,8 @@ class FestivalDetailPage extends StatelessWidget {
               Image.network(
                 image,
                 width: double.infinity,
-                height: 430, // 이미지를 더 크게 표시합니다.
-                fit: BoxFit.fitHeight, // 이미지가 컨테이너에 맞도록 조정합니다.
+                height: 430,
+                fit: BoxFit.fitHeight,
               ),
             const SizedBox(height: 10),
             const Text(
@@ -366,4 +353,3 @@ class FestivalDetailPage extends StatelessWidget {
     );
   }
 }
-
