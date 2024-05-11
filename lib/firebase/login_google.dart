@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
-
 import '../main.dart';
+import 'package:travelmaker/firebase/login_google.dart';
 
 class GoogleLogin extends StatefulWidget {
   const GoogleLogin({Key? key}) : super(key: key);
@@ -13,6 +13,17 @@ class GoogleLogin extends StatefulWidget {
 }
 
 class _GoogleLoginState extends State<GoogleLogin> {
+  bool _isButtonDisabled = false; // 버튼 활성/비활성 상태 변수
+  late final GoogleSignIn _googleSignIn;
+
+  @override
+  void initState() {
+    super.initState();
+    _googleSignIn = GoogleSignIn();
+    // FirebaseAuthController를 GetX에 등록
+    Get.put(FirebaseAuthController());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,29 +32,20 @@ class _GoogleLoginState extends State<GoogleLogin> {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            signInWithGoogle().then((success) {
-              if (success) {
-                // 로그인 성공 시 AuthController를 통해 로그인 상태 갱신
-                Get.find<AuthController>().updateLoginStatus(true);
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Google 로그인에 실패했습니다. 사용자가 로그인 프로세스를 취소했을 수 있습니다.'),
-                ));
-              }
-            });
-          },
-          child: const Text('구글로 로그인'),
+          onPressed: _isButtonDisabled ? null : () async => await _signInWithGoogleDelayed(),
+          child: _isButtonDisabled ? CircularProgressIndicator() : const Text('구글로 로그인'),
         ),
       ),
     );
   }
 
-  Future<bool> signInWithGoogle() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
+  Future<void> _signInWithGoogleDelayed() async {
+    setState(() {
+      _isButtonDisabled = true;
+    });
 
     try {
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser != null) {
         final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -52,16 +54,33 @@ class _GoogleLoginState extends State<GoogleLogin> {
           idToken: googleAuth.idToken,
         );
 
-        await FirebaseAuth.instance.signInWithCredential(credential);
-        print('구글로 로그인 성공');
-        return true;
+        final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+        print('구글로 로그인 성공: ${userCredential.user!.displayName}');
+        // FirebaseAuthController를 사용하여 로그인 상태 업데이트
+        Get.find<FirebaseAuthController>().updateLoginStatus(true);
+        Get.offAll(const MyApp()); // 로그인 성공 시 HomePage로 이동합니다.
       } else {
-        print('사용자가 로그인 프로세스를 취소했습니다.');
-        return false;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('구글 로그인에 실패했습니다.'),
+        ));
       }
     } catch (e) {
       print('구글 로그인 중 오류 발생: $e');
-      return false;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('구글 로그인 중 오류가 발생했습니다.'),
+      ));
+    } finally {
+      setState(() {
+        _isButtonDisabled = false;
+      });
     }
+  }
+}
+
+class FirebaseAuthController extends GetxController {
+  var isLoggedIn = false.obs;
+
+  void updateLoginStatus(bool status) {
+    isLoggedIn.value = status;
   }
 }

@@ -2,13 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-        <key>NSPhotoLibraryUsageDescription</key>
-        <string>We need to take a picture!</string>
-        <key>NSCameraUsageDescription</key>
-        <string>We need to take a picture!</string>
-        <key>GMSApiKey</key>
-        <string>AIzaSyBv6arKk9NPKsoGw3iHGHbQ9aFDcto1H04</string>
-
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need to take a picture!</string>
+		<key>NSCameraUsageDescription</key>
+		<string>We need to take a picture!</string>
+		<key>GMSApiKey</key>
+		<string>AIzaSyBv6arKk9NPKsoGw3iHGHbQ9aFDcto1H04</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
