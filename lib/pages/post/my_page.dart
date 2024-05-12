@@ -11,10 +11,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserModel {
-  String profileImagePath;
+  String uid;
+  String profileImageUrl;
   String nickname;
 
-  UserModel({required this.profileImagePath, required this.nickname});
+  UserModel({required this.uid, required this.profileImageUrl, required this.nickname});
 }
 
 class MyPage extends StatefulWidget {
@@ -25,12 +26,21 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  UserModel user = UserModel(
-    profileImagePath: '', // 초기 프로필 이미지 경로를 빈 값으로 설정
-    nickname: '사용자닉네임',
-  );
-
+  late UserModel user;
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    // 사용자 정보 초기화
+    user = UserModel(
+      uid: FirebaseAuth.instance.currentUser!.uid,
+      profileImageUrl: '', // 초기 프로필 이미지 경로를 빈 문자열로 설정
+      nickname: '', // 초기 닉네임을 빈 문자열로 설정
+    );
+    // 사용자 정보 불러오기
+    _loadUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,50 +61,31 @@ class _MyPageState extends State<MyPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                CircleAvatar(
-                  backgroundImage: user.profileImagePath.isNotEmpty
-                      ? FileImage(File(user.profileImagePath)) as ImageProvider // 파일 이미지일 경우
-                      : const AssetImage('assets/images/default_image.png'), // 기본 이미지일 경우
-                  radius: 50,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.edit, size: 15),
-                  onPressed: () {
-                    _pickImage();
-                  },
-                ),
-              ],
+            GestureDetector(
+              onTap: () {
+                _pickImage();
+              },
+              child: CircleAvatar(
+                backgroundImage: user.profileImageUrl.isEmpty
+                    ? Image.asset('assets/images/default_image.png').image
+                    : NetworkImage(user.profileImageUrl),
+                radius: 50,
+              ),
             ),
             const SizedBox(height: 20),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('UserData').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (!snapshot.hasData) {
-                      return Text(user.nickname, style: const TextStyle(fontSize: 20)); // 에러 발생 시 기본 닉네임 표시
-                    }
-                    var data = snapshot.data!.data() as Map<String, dynamic>;
-                    String nickname = data['nickname'] ?? user.nickname; // 서버에서 받아온 닉네임이 없으면 기본 닉네임 사용
-                    return Text(nickname, style: const TextStyle(fontSize: 20));
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.edit, size: 15),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => UserData()), // UserData 페이지로 이동
-                    );
-                  },
-                ),
-              ],
+            StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('UserData').doc(user.uid).snapshots(),
+              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
+                if (!snapshot.hasData) {
+                  return Text(user.nickname, style: const TextStyle(fontSize: 20)); // 에러 발생 시 기본 닉네임 표시
+                }
+                var data = snapshot.data!.data() as Map<String, dynamic>;
+                String nickname = data['nickname'] ?? user.nickname; // 서버에서 받아온 닉네임이 없으면 기본 닉네임 사용
+                return Text(nickname, style: const TextStyle(fontSize: 20));
+              },
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -115,10 +106,13 @@ class _MyPageState extends State<MyPage> {
             ),
             ElevatedButton(
               onPressed: () {
-                // 사용자 데이터 삭제 함수 호출
-                _deleteUserData();
+                // 수정 페이지로 이동
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserData()), // 수정 페이지로 이동
+                );
               },
-              child: const Text('내 정보 삭제'),
+              child: const Text('내정보'),
             ),
           ],
         ),
@@ -131,64 +125,51 @@ class _MyPageState extends State<MyPage> {
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
 
-      // 이미지의 크기를 확인
-      int fileSize = await imageFile.length();
-      double fileSizeInKB = fileSize / 1024; // 파일 크기를 KB로 변환
-
-      // 파일 크기가 일정 이상인 경우 경고 표시
-      if (fileSizeInKB > 1024) { // 예를 들어, 1024KB(1MB) 이상인 경우
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('이미지 크기가 너무 큽니다'),
-              content: Text('사진 크기가 맞지 않을 수 있습니다. 계속해서 업로드 하시겠습니까?'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    _uploadImage(imageFile); // 사용자가 계속해서 업로드를 선택한 경우 이미지 업로드 수행
-                  },
-                  child: Text('예'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('아니오'),
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        // 파일 크기가 적절한 경우에는 그냥 이미지 업로드 수행
-        _uploadImage(imageFile);
-      }
+      // 파일 크기를 확인하지 않고 바로 이미지 업로드 수행
+      _uploadImage(imageFile);
     }
   }
 
   void _uploadImage(File imageFile) async {
-    // Firebase Storage에 이미지 업로드
-    Reference storageReference = FirebaseStorage.instance.ref().child('profile_images/${DateTime.now().millisecondsSinceEpoch}');
-    UploadTask uploadTask = storageReference.putFile(imageFile);
-    await uploadTask.whenComplete(() async {
-      // 업로드가 완료되면 이미지 다운로드 URL을 가져와서 업데이트
-      String imageUrl = await storageReference.getDownloadURL();
-      setState(() {
-        // 프로필 이미지 경로를 업데이트
-        user.profileImagePath = imageUrl;
+    try {
+      // Firebase Storage에 이미지 업로드
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      Reference storageReference = FirebaseStorage.instance.ref().child('profile_images/$uid/${DateTime.now().millisecondsSinceEpoch}');
+      UploadTask uploadTask = storageReference.putFile(imageFile);
+      await uploadTask.whenComplete(() async {
+        // 업로드가 완료되면 이미지 다운로드 URL을 가져와서 업데이트
+        String imageUrl = await storageReference.getDownloadURL();
+        setState(() {
+          // 프로필 이미지 경로를 업데이트
+          user.profileImageUrl = imageUrl;
+        });
+        // Firestore에 프로필 이미지 URL 업데이트
+        FirebaseFirestore.instance.collection('UserData').doc(user.uid).update({'profileImageUrl': imageUrl});
       });
-    });
+    } catch (e) {
+      print('이미지 업로드 중 오류 발생: $e');
+    }
   }
 
-  void _deleteUserData() async {
+  // 사용자 정보 불러오기
+  void _loadUserData() async {
     try {
-      // Firestore에서 해당 사용자의 데이터 삭제
-      await FirebaseFirestore.instance.collection('UserData').doc(FirebaseAuth.instance.currentUser!.uid).delete();
-      print('사용자 데이터 삭제 완료');
+      // Firestore에서 해당 사용자의 데이터 가져오기
+      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('UserData').doc(user.uid).get();
+      if (userData.exists) {
+        var data = userData.data() as Map<String, dynamic>;
+        String profileImageUrl = data['profileImageUrl'] ?? ''; // 프로필 이미지 URL이 없으면 빈 문자열 사용
+        String nickname = data['nickname'] ?? ''; // 서버에서 받아온 닉네임이 없으면 빈 문자열 사용
+        setState(() {
+          // 사용자 정보 업데이트
+          user.profileImageUrl = profileImageUrl;
+          user.nickname = nickname;
+        });
+      } else {
+        print('해당 사용자의 데이터가 존재하지 않습니다.');
+      }
     } catch (e) {
-      print('사용자 데이터 삭제 중 오류 발생: $e');
+      print('사용자 정보 불러오기 중 오류 발생: $e');
     }
   }
 
