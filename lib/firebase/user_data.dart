@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'firestore_database.dart';
-import 'user_data.dart'; // 수정된 부분
+import 'firestore_database.dart'; // 수정된 부분
 
 class UserData extends StatelessWidget {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -24,24 +24,19 @@ class UserData extends StatelessWidget {
         ],
       ),
       body: StreamBuilder(
-        stream: firestore.collection('UserData').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        stream: firestore.collection('UserData').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('데이터를 불러오는 중 오류가 발생했습니다.'),
-            );
-          }
-          if (snapshot.data!.docs.isEmpty) {
+          if (!snapshot.hasData) {
             return Center(
               child: Text('저장된 데이터가 없습니다.'),
             );
           }
-          var data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+          var data = snapshot.data!.data() as Map<String, dynamic>;
           return ListView(
             children: [
               ListTile(

@@ -73,15 +73,15 @@ class _MyPageState extends State<MyPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('UserData').snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  stream: FirebaseFirestore.instance.collection('UserData').doc(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
                     }
-                    if (snapshot.hasError || snapshot.data!.docs.isEmpty) {
+                    if (!snapshot.hasData) {
                       return Text(user.nickname, style: const TextStyle(fontSize: 20)); // 에러 발생 시 기본 닉네임 표시
                     }
-                    var data = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                    var data = snapshot.data!.data() as Map<String, dynamic>;
                     String nickname = data['nickname'] ?? user.nickname; // 서버에서 받아온 닉네임이 없으면 기본 닉네임 사용
                     return Text(nickname, style: const TextStyle(fontSize: 20));
                   },
@@ -112,6 +112,13 @@ class _MyPageState extends State<MyPage> {
                 );
               },
               child: const Text('찜한 여행'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // 사용자 데이터 삭제 함수 호출
+                _deleteUserData();
+              },
+              child: const Text('내 정보 삭제'),
             ),
           ],
         ),
@@ -173,6 +180,16 @@ class _MyPageState extends State<MyPage> {
         user.profileImagePath = imageUrl;
       });
     });
+  }
+
+  void _deleteUserData() async {
+    try {
+      // Firestore에서 해당 사용자의 데이터 삭제
+      await FirebaseFirestore.instance.collection('UserData').doc(FirebaseAuth.instance.currentUser!.uid).delete();
+      print('사용자 데이터 삭제 완료');
+    } catch (e) {
+      print('사용자 데이터 삭제 중 오류 발생: $e');
+    }
   }
 
   // 로그아웃 기능
