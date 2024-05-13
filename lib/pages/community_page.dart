@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class CommunityPage extends StatefulWidget {
-  const CommunityPage({Key? key}) : super(key: key);
+  const CommunityPage({super.key});
 
   @override
   _CommunityPageState createState() => _CommunityPageState();
@@ -25,7 +24,7 @@ class _CommunityPageState extends State<CommunityPage> {
           children: [
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: _posts.length,
               itemBuilder: (context, index) {
                 return InkWell(
@@ -44,14 +43,14 @@ class _CommunityPageState extends State<CommunityPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _posts[index].image != null
+                          _posts[index].images.isNotEmpty
                               ? Image.file(
-                            _posts[index].image!,
+                            _posts[index].images[0],
                             height: 100,
                             width: 100,
                             fit: BoxFit.cover,
                           )
-                              : SizedBox(width: 100),
+                              : const SizedBox(width: 100),
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -63,13 +62,15 @@ class _CommunityPageState extends State<CommunityPage> {
                                     style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(height: 8.0),
-                                  Text(
-                                    '작성자: ${_posts[index].author}',
-                                    style: const TextStyle(fontStyle: FontStyle.italic),
+                                  // 기존의 Text 위젯을 ExpandableText 위젯으로 대체
+                                  ExpandableText(
+                                    text: _posts[index].content,
+                                    maxHeight: 100.0, // 최대 허용 높이를 설정하세요. 이 예제에서는 100.0으로 설정했습니다.
                                   ),
                                   const SizedBox(height: 8.0),
-                                  Text(_posts[index].content),
-                                  const SizedBox(height: 8.0),
+                                  // 아래의 Text 위젯은 제거하거나, 필요에 따라 유지합니다.
+                                  // Text(_posts[index].content),
+                                  // const SizedBox(height: 8.0),
                                   Row(
                                     children: [
                                       IconButton(
@@ -95,6 +96,7 @@ class _CommunityPageState extends State<CommunityPage> {
                               ),
                             ),
                           ),
+
                         ],
                       ),
                     ),
@@ -119,7 +121,8 @@ class _CommunityPageState extends State<CommunityPage> {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController contentController = TextEditingController();
 
-    XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    // 여러 이미지를 선택
+    List<XFile>? pickedImages = await picker.pickMultiImage();
 
     showDialog(
       context: context,
@@ -145,12 +148,13 @@ class _CommunityPageState extends State<CommunityPage> {
                   maxLines: null,
                 ),
                 const SizedBox(height: 16.0),
-                pickedImage != null
-                    ? Image.file(
-                  File(pickedImage.path),
-                  height: 100,
-                )
-                    : const SizedBox(),
+                if (pickedImages.isNotEmpty)
+                  ...pickedImages.map((image) {
+                    return Image.file(
+                      File(image.path),
+                      height: 100,
+                    );
+                  }),
                 const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
@@ -158,7 +162,7 @@ class _CommunityPageState extends State<CommunityPage> {
                       title: titleController.text,
                       content: contentController.text,
                       author: 'Anonymous',
-                      image: pickedImage != null ? File(pickedImage.path) : null,
+                      images: pickedImages != null ? pickedImages.map((image) => File(image.path)).toList() : [],
                     );
                     setState(() {
                       _posts.add(newPost);
@@ -176,13 +180,83 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 }
 
+class ExpandableText extends StatefulWidget {
+  final String text;
+  final double maxHeight;
+
+  const ExpandableText({super.key, required this.text, this.maxHeight = 100.0});
+
+  @override
+  _ExpandableTextState createState() => _ExpandableTextState();
+}
+
+class _ExpandableTextState extends State<ExpandableText> {
+  late String firstHalf;
+  late String secondHalf;
+
+  bool hiddenText = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.text.length > 100) {
+      firstHalf = widget.text.substring(0, 100);
+      secondHalf = widget.text.substring(100, widget.text.length);
+    } else {
+      firstHalf = widget.text;
+      secondHalf = "";
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, size) {
+        final span = TextSpan(text: firstHalf + (hiddenText ? "..." : secondHalf));
+        final tp = TextPainter(text: span, maxLines: hiddenText ? null : 3, textDirection: TextDirection.ltr);
+        tp.layout(maxWidth: size.maxWidth);
+
+        if (tp.size.height <= widget.maxHeight) {
+          return Text(widget.text);
+        } else {
+          return Column(
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: hiddenText ? ("$firstHalf...") : (firstHalf + secondHalf),
+                  style: DefaultTextStyle.of(context).style,
+                ),
+                maxLines: hiddenText ? 3 : null,
+              ),
+              InkWell(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(hiddenText ? "더 보기" : "접기", style: const TextStyle(color: Colors.blue)),
+                  ],
+                ),
+                onTap: () {
+                  setState(() {
+                    hiddenText = !hiddenText;
+                  });
+                },
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+}
+
 class Post {
   final String title;
   final String content;
   final String author;
   int likeCount;
   bool liked;
-  File? image;
+  List<File> images; // 이미지 리스트를 추가
   List<Comment> comments;
 
   Post({
@@ -191,7 +265,7 @@ class Post {
     required this.author,
     this.likeCount = 0,
     this.liked = false,
-    this.image,
+    required this.images,
     this.comments = const [],
   });
 }
@@ -207,7 +281,7 @@ class Comment {
 class PostDetailPage extends StatefulWidget {
   final Post post;
 
-  const PostDetailPage({Key? key, required this.post}) : super(key: key);
+  const PostDetailPage({super.key, required this.post});
 
   @override
   _PostDetailPageState createState() => _PostDetailPageState();
@@ -223,103 +297,111 @@ class _PostDetailPageState extends State<PostDetailPage> {
   }
 
   @override
-  Widget build(BuildContext context) {    return Scaffold(
-    appBar: AppBar(
-      title: const Text('게시글 상세'),
-    ),
-    body: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            widget.post.image != null
-                ? Image.file(
-              widget.post.image!,
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            )
-                : const SizedBox(), // 이미지가 있으면 표시
-            const SizedBox(height: 16.0),
-            Text(
-              widget.post.title,
-              style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16.0),
-            Text(
-              '작성자: ${widget.post.author}',
-              style: const TextStyle(fontStyle: FontStyle.italic),
-            ),
-            const SizedBox(height: 16.0),
-            Text(widget.post.content),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    widget.post.liked ? Icons.favorite : Icons.favorite_border,
-                    color: widget.post.liked ? Colors.red : null,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('게시글 상세'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 여러 이미지를 표시
+              if (widget.post.images.isNotEmpty)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: widget.post.images.map((image) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Image.file(
+                          image,
+                          height: 340,
+                          width: 340,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    }).toList(),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      if (widget.post.liked) {
-                        widget.post.likeCount--;
-                      } else {
-                        widget.post.likeCount++;
-                      }
-                      widget.post.liked = !widget.post.liked;
-                    });
-                  },
                 ),
-                Text('${widget.post.likeCount}'),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            const Text(
-              '댓글',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8.0),
-            SingleChildScrollView(
-              child: Column(
-                children: widget.post.comments.map((comment) {
-                  return ListTile(
-                    title: Text(comment.text),
-                  );
-                }).toList(),
+              const SizedBox(height: 16.0),
+              Text(
+                widget.post.title,
+                style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _commentController,
-              decoration: const InputDecoration(
-                labelText: '댓글 작성',
+              const SizedBox(height: 16.0),
+              Text(
+                '작성자: ${widget.post.author}',
+                style: const TextStyle(fontStyle: FontStyle.italic),
               ),
-            ),
-            const SizedBox(height: 8.0),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  widget.post.comments.add(
-                    Comment(
-                      text: _commentController.text,
+              const SizedBox(height: 16.0),
+              Text(widget.post.content),
+              const SizedBox(height: 16.0),
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      widget.post.liked ? Icons.favorite : Icons.favorite_border,
+                      color: widget.post.liked ? Colors.red : null,
                     ),
-                  );
-                  _commentController.clear(); // 댓글 작성 후 입력 필드 비우기
-                  print('댓글 추가됨: ${widget.post.comments}');
-                });
-              },
-              child: const Text('댓글 작성'),
-            ),
-
-          ],
+                    onPressed: () {
+                      setState(() {
+                        if (widget.post.liked) {
+                          widget.post.likeCount--;
+                        } else {
+                          widget.post.likeCount++;
+                        }
+                        widget.post.liked = !widget.post.liked;
+                      });
+                    },
+                  ),
+                  Text('${widget.post.likeCount}'),
+                ],
+              ),
+              const SizedBox(height: 16.0),
+              const Text(
+                '댓글',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8.0),
+              SingleChildScrollView(
+                child: Column(
+                  children: widget.post.comments.map((comment) {
+                    return ListTile(
+                      title: Text(comment.text),
+                    );
+                  }).toList(),
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _commentController,
+                decoration: const InputDecoration(
+                  labelText: '댓글 작성',
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    widget.post.comments.add(
+                      Comment(
+                        text: _commentController.text,
+                      ),
+                    );
+                    _commentController.clear(); // 댓글 작성 후 입력 필드 비우기
+                  });
+                },
+                child: const Text('댓글 작성'),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
   }
-
   @override
   void dispose() {
     _commentController.dispose();

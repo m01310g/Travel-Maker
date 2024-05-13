@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ChungbukInfo extends StatefulWidget {
-  const ChungbukInfo({Key? key}) : super(key: key);
+  const ChungbukInfo({super.key});
 
   @override
   _ChungbukInfoState createState() => _ChungbukInfoState();
@@ -20,9 +20,9 @@ class _ChungbukInfoState extends State<ChungbukInfo> {
   }
 
   Future<void> fetchRegionInfo() async {
-    final apiKey =
+    const apiKey =
         '***REMOVED***';
-    final url =
+    const url =
         'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=8&arrange=D&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
     final response = await http.get(Uri.parse(url));
@@ -52,7 +52,7 @@ class _ChungbukInfoState extends State<ChungbukInfo> {
             children: [
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: regionInfo.length,
                 itemBuilder: (context, index) {
                   return ListTile(

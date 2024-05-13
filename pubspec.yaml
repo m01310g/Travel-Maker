@@ -30,11 +30,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_naver_map: ^1.2.2
   universal_html: ^2.2.4
   flutter_native_splash: ^2.2.7
   table_calendar: ^3.1.1
   http: ^1.2.1
+  flutter_config: ^2.0.2
 
 
 
@@ -48,7 +48,13 @@ dependencies:
   validators: ^3.0.0
   cached_network_image: ^3.3.1
   image_picker: ^1.0.7
-  google_maps_flutter: ^2.2.8
+  google_maps_flutter: ^2.6.1
+  firebase_auth: ^4.19.4
+  firebase_core: ^2.30.1
+  google_sign_in: ^6.2.1
+  cloud_firestore: ^4.17.2
+  firebase_database: ^10.5.5
+  firebase_storage: ^11.7.5
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +66,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+
+flutter_launcher_icons:
+  ios:
+    true
+  android:
+    true
+  image_path: "assets/images/travel_maker_logo.png"
+  remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
