@@ -132,19 +132,29 @@ class _MyPageState extends State<MyPage> {
 
   void _uploadImage(File imageFile) async {
     try {
-      // Firebase Storage에 이미지 업로드
+      // 현재 사용자의 이전 프로필 이미지 URL 가져오기
+      String previousImageUrl = user.profileImageUrl;
+
+      // Firebase Storage에 새 이미지 업로드
       String uid = FirebaseAuth.instance.currentUser!.uid;
       Reference storageReference = FirebaseStorage.instance.ref().child('profile_images/$uid/${DateTime.now().millisecondsSinceEpoch}');
       UploadTask uploadTask = storageReference.putFile(imageFile);
       await uploadTask.whenComplete(() async {
-        // 업로드가 완료되면 이미지 다운로드 URL을 가져와서 업데이트
+        // 업로드가 완료되면 새로운 이미지의 URL을 가져옴
         String imageUrl = await storageReference.getDownloadURL();
+
+        // Firestore에 새 이미지 URL 업데이트
+        await FirebaseFirestore.instance.collection('UserData').doc(user.uid).update({'profileImageUrl': imageUrl});
+
+        // 이전 프로필 이미지가 있다면 삭제
+        if (previousImageUrl.isNotEmpty) {
+          await FirebaseStorage.instance.refFromURL(previousImageUrl).delete();
+        }
+
+        // 프로필 이미지 경로를 업데이트
         setState(() {
-          // 프로필 이미지 경로를 업데이트
           user.profileImageUrl = imageUrl;
         });
-        // Firestore에 프로필 이미지 URL 업데이트
-        FirebaseFirestore.instance.collection('UserData').doc(user.uid).update({'profileImageUrl': imageUrl});
       });
     } catch (e) {
       print('이미지 업로드 중 오류 발생: $e');
