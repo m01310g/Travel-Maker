@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -21,8 +22,8 @@ class _JejuInfoState extends State<JejuInfo> {
   }
 
   Future<void> fetchRegionInfo() async {
-    const apiKey = '***REMOVED***';
-    const url = 'https://api.odcloud.kr/api/15049995/v1/uddi:f2e87fc5-9d8d-4f22-adfc-ae9993d1bbe5?page=5&perPage=20&serviceKey=$apiKey';
+    final apiKey = dotenv.env['region_apiKey'];
+    String url = 'https://api.odcloud.kr/api/15049995/v1/uddi:f2e87fc5-9d8d-4f22-adfc-ae9993d1bbe5?page=5&perPage=20&serviceKey=$apiKey';
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {

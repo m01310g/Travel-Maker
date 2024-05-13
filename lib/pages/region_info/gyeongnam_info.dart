@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -22,8 +23,7 @@ class _GyeongnamInfoState extends State<GyeongnamInfo> {
   }
 
   Future<void> fetchRegionInfo(String areaCode, String regionName) async {
-    const apiKey =
-        '***REMOVED***';
+    final apiKey =dotenv.env['region_apiKey'];
     final url =
         'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=$areaCode&arrange=D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 

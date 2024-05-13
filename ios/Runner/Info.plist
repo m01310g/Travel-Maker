@@ -7,7 +7,7 @@
 		<key>NSCameraUsageDescription</key>
 		<string>We need to take a picture!</string>
 		<key>GMSApiKey</key>
-		<string>***REMOVED***</string>
+		<string>AIzaSyBv6arKk9NPKsoGw3iHGHbQ9aFDcto1H04</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>

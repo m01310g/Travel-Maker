@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ChungbukInfo extends StatefulWidget {
@@ -20,10 +21,8 @@ class _ChungbukInfoState extends State<ChungbukInfo> {
   }
 
   Future<void> fetchRegionInfo() async {
-    const apiKey =
-        '***REMOVED***';
-    const url =
-        'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=8&arrange=D&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
+    final apiKey = dotenv.env['region_apiKey'];
+    String url = 'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=8&arrange=D&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {

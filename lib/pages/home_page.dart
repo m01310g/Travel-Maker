@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchFestivalData() async {
-    const apiKey = '***REMOVED***';
+    const apiKey = 'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
     const url = 'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&arrange=D&numOfRows=100&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
     final response = await http.get(Uri.parse(url));

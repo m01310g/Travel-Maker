@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -41,7 +42,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: '***REMOVED***',
+    apiKey: dotenv.env['firebase_webKey'],
     appId: '1:340006461251:web:97a90c5fe935c960e599f6',
     messagingSenderId: '340006461251',
     projectId: 'travelmaker-66f58',
@@ -51,7 +52,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: '***REMOVED***',
+    apiKey: dotenv.env['firebase_androidKey'],
     appId: '1:340006461251:android:da2fc602dff10bf5e599f6',
     messagingSenderId: '340006461251',
     projectId: 'travelmaker-66f58',
@@ -59,7 +60,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: '***REMOVED***',
+    apiKey: dotenv.env['firebase_ios_macosKey'],
     appId: '1:340006461251:ios:f6fd2d2f9c8674b9e599f6',
     messagingSenderId: '340006461251',
     projectId: 'travelmaker-66f58',
@@ -69,7 +70,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: '***REMOVED***',
+    apiKey: dotenv.env['firebase_ios_macosKey'],
     appId: '1:340006461251:ios:f6fd2d2f9c8674b9e599f6',
     messagingSenderId: '340006461251',
     projectId: 'travelmaker-66f58',
@@ -79,7 +80,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: '***REMOVED***',
+    apiKey: dotenv.env['firebase_windowsKey'],
     appId: '1:340006461251:web:cdd4ffa25c34481fe599f6',
     messagingSenderId: '340006461251',
     projectId: 'travelmaker-66f58',

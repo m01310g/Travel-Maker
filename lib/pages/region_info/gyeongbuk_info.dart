@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../map_page.dart';
 
@@ -23,7 +24,7 @@ class _GyeongbukInfoState extends State<GyeongbukInfo> {
   }
 
   Future<void> fetchRegionInfo(String contentTypeId, String subCategory) async {
-    const apiKey = '***REMOVED***'; // 여기에 API 키를 입력하세요
+    final apiKey = dotenv.env['region_apiKey']; // 여기에 API 키를 입력하세요
     String url =
         'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=4&contentTypeId=$contentTypeId&arrange=D&numOfRows=50&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
