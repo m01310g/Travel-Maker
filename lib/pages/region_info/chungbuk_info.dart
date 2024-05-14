@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ChungbukInfo extends StatefulWidget {
-  const ChungbukInfo({Key? key}) : super(key: key);
+  const ChungbukInfo({super.key});
 
   @override
   _ChungbukInfoState createState() => _ChungbukInfoState();
@@ -20,10 +21,8 @@ class _ChungbukInfoState extends State<ChungbukInfo> {
   }
 
   Future<void> fetchRegionInfo() async {
-    final apiKey =
-        'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
-    final url =
-        'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=8&arrange=D&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
+    final apiKey = dotenv.env['region_apiKey'];
+    String url = 'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=8&arrange=D&numOfRows=20&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -52,7 +51,7 @@ class _ChungbukInfoState extends State<ChungbukInfo> {
             children: [
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: regionInfo.length,
                 itemBuilder: (context, index) {
                   return ListTile(
