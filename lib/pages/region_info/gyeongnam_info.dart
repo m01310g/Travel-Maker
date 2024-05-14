@@ -32,15 +32,21 @@ class _GyeongnamInfoState extends State<GyeongnamInfo> {
       if (response.statusCode == 200) {
         final decodedData = json.decode(utf8.decode(response.bodyBytes));
         print("API 응답 데이터 구조: $decodedData"); // 응답 데이터 구조 디버그 출력
-        final items = decodedData['response']['body']['items']['item'];
+        var items = decodedData['response']['body']['items']['item'];
 
-        // 데이터 파싱 및 결합
+// items가 List가 아니라면 List로 만들어주기
+        if (items is! List) {
+          items = [items];
+        }
+
+// 데이터 파싱 및 결합
         final infoList = items.map((item) => {
           'title': item['title'],
           'address': item['addr1'],
           'mapx': double.parse(item['mapx'] ?? '0'),
           'mapy': double.parse(item['mapy'] ?? '0'),
         }).toList();
+
 
         // 부산과 울산 데이터 결합 및 셔플
         setState(() {

@@ -26,8 +26,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-Properties properties = new Properties()
-properties.load(rootProject.file('local.properties').newDataInputStream())
+localPropertie.load(rootProject.file('local.properties').newDataInputStream())
 
 android {
     defaultConfig {
