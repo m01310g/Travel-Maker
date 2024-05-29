@@ -5,8 +5,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../map_page.dart';
 import '../route_page.dart';
 
-class MyLikedList extends StatelessWidget {
+class MyLikedList extends StatefulWidget {
   const MyLikedList({Key? key}) : super(key: key);
+
+  @override
+  _MyLikedListState createState() => _MyLikedListState();
+}
+
+class _MyLikedListState extends State<MyLikedList> {
+  List<dynamic> likedItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,8 @@ class MyLikedList extends StatelessWidget {
             return const Center(child: Text("찜한 여행이 없습니다."));
           }
 
-          List<dynamic> likedItems = List<dynamic>.from(userData['likedItems']);
+          likedItems = List<dynamic>.from(userData['likedItems']);
+
           return Column(
             children: [
               ElevatedButton(
@@ -97,57 +105,69 @@ class MyLikedList extends StatelessWidget {
                     );
                   }
                 },
-                child: const Text('모아보기'),
+                child: const Text('경로탐색'),
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: likedItems.length,
-                  itemBuilder: (context, index) {
-                    var likedItem = likedItems[index] as Map<String, dynamic>;
+                child: ReorderableListView(
+                  onReorder: (int oldIndex, int newIndex) {
+                    setState(() {
+                      if (newIndex > oldIndex) {
+                        newIndex -= 1;
+                      }
+                      final item = likedItems.removeAt(oldIndex);
+                      likedItems.insert(newIndex, item);
 
-                    // 여기서부터는 likedItem을 직접 사용합니다.
-                    return Dismissible(
-                      key: UniqueKey(),
-                      background: Container(
-                        color: Colors.red,
-                        child: const Icon(Icons.delete, color: Colors.white),
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        margin: const EdgeInsets.symmetric(vertical: 4.0),
-                      ),
-                      onDismissed: (direction) {
-                        // 좋아요 취소 및 데이터베이스 업데이트
-                        removeLikedPlace(likedItem['itemId']);
-                      },
-                      direction: DismissDirection.endToStart,
-                      child: ListTile(
-                        leading: likedItem['image'] != null && likedItem['image'].isNotEmpty
-                            ? Image.network(
-                          likedItem['image'],
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        )
-                            : const Icon(Icons.image, size: 50),
-                        title: Text(likedItem['title'] ?? '이름 없음'),
-                        subtitle: Text(likedItem['address'] ?? '주소 정보 없음'),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailPage(
-                                title: likedItem['title'],
-                                address: likedItem['address'],
-                                image: likedItem['image'],
-                                mapx: likedItem['mapx'],
-                                mapy: likedItem['mapy'],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                      // Firestore에 변경된 순서 업데이트
+                      updateLikedPlacesOrder();
+                    });
                   },
+                  children: [
+                    for (int index = 0; index < likedItems.length; index++)
+                      Dismissible(
+                        key: ValueKey(likedItems[index]['itemId']),
+                        background: Container(
+                          color: Colors.red,
+                          child: const Icon(Icons.delete, color: Colors.white),
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          margin: const EdgeInsets.symmetric(vertical: 4.0),
+                        ),
+                        onDismissed: (direction) {
+                          // 좋아요 취소 및 데이터베이스 업데이트
+                          removeLikedPlace(likedItems[index]['itemId']);
+                          setState(() {
+                            likedItems.removeAt(index);
+                          });
+                        },
+                        direction: DismissDirection.endToStart,
+                        child: ListTile(
+                          leading: likedItems[index]['image'] != null && likedItems[index]['image'].isNotEmpty
+                              ? Image.network(
+                            likedItems[index]['image'],
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          )
+                              : const Icon(Icons.image, size: 50),
+                          title: Text(likedItems[index]['title'] ?? '이름 없음'),
+                          subtitle: Text(likedItems[index]['address'] ?? '주소 정보 없음'),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                  title: likedItems[index]['title'],
+                                  address: likedItems[index]['address'],
+                                  image: likedItems[index]['image'],
+                                  mapx: likedItems[index]['mapx'],
+                                  mapy: likedItems[index]['mapy'],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
@@ -177,6 +197,15 @@ class MyLikedList extends StatelessWidget {
       });
     }
   }
+
+  void updateLikedPlacesOrder() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    DocumentReference userDoc = FirebaseFirestore.instance.collection('UserData').doc(uid);
+
+    await userDoc.update({
+      'likedItems': likedItems,
+    });
+  }
 }
 
 class DetailPage extends StatelessWidget {
@@ -187,10 +216,11 @@ class DetailPage extends StatelessWidget {
   final double? mapy;
 
   const DetailPage({
-    Key? key,
-    this.title,
-    this.address,
-    this.image,
+  Key? key,
+  this.title,
+  this.address,
+  this.image,
+
     this.mapx,
     this.mapy,
   }) : super(key: key);

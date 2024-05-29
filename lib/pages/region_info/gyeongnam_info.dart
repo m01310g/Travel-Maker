@@ -41,23 +41,19 @@ class _GyeongnamInfoState extends State<GyeongnamInfo> {
   Future<void> fetchRegionInfo(String contentTypeId, String subCategory) async {
     const apiKey = 'xHIYywSVOCXTorWSMxYoMW92r1or16xp%2FtCpAviub7VzP26w68%2BB22HAnjI%2FR6DFfXvd%2BuTxmHUYabfyeti4sw%3D%3D';
     List<String> areaCodes = ['6', '7', '36']; //부산,울산,경남
-
     List<Map<String, dynamic>> fetchedInfo = [];
-
     for (String areaCode in areaCodes) {
       String url =
-          'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=$areaCode&contentTypeId=$contentTypeId&arrange=D&numOfRows=200&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
-
+          'http://apis.data.go.kr/B551011/KorService1/areaBasedList1?ServiceKey=$apiKey&areaCode=$areaCode&'
+          'contentTypeId=$contentTypeId&arrange=D&numOfRows=200&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json';
       if (contentTypeId == '39' && subCategory.isNotEmpty) {
         url += '&cat3=$subCategory';
       }
-
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         try {
           final decodedData = json.decode(utf8.decode(response.bodyBytes));
           final items = decodedData['response']['body']['items']['item'];
-
           fetchedInfo.addAll(
             List<Map<String, dynamic>>.from(
               items.map((item) => {

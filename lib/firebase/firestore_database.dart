@@ -12,7 +12,6 @@ class FirestoreDatabase extends StatefulWidget {
 }
 
 class _FirestoreDatabaseState extends State<FirestoreDatabase> {
-  // TextController 및 FirebaseFirestore 인스턴스를 상태 클래스 외부로 이동하지 않았습니다.
   final nameController = TextEditingController();
   final nicknameController = TextEditingController();
   final birthDateController = TextEditingController();
@@ -25,7 +24,6 @@ class _FirestoreDatabaseState extends State<FirestoreDatabase> {
   @override
   void initState() {
     super.initState();
-    // initState에서 사용자 데이터를 가져와서 필드에 할당합니다.
     firestore
         .collection('UserData')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -103,12 +101,11 @@ class _FirestoreDatabaseState extends State<FirestoreDatabase> {
 
                 setErrorMessage(null);
 
-                // 사용자의 UID를 이용하여 데이터 저장
                 try {
                   await firestore
                       .collection('UserData')
                       .doc(FirebaseAuth.instance.currentUser!.uid)
-                      .set({
+                      .update({
                     'name': nameController.text,
                     'nickname': nicknameController.text,
                     'birthDate': birthDateController.text,
@@ -116,7 +113,6 @@ class _FirestoreDatabaseState extends State<FirestoreDatabase> {
                     'phoneNumber': phoneNumberController.text,
                   });
 
-                  // 데이터 수정 후 마이페이지로 이동
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => MyPage()),
