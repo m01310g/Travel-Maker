@@ -26,13 +26,9 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-localPropertie.load(rootProject.file('local.properties').newDataInputStream())
+//localProperties.load(rootProject.file('local.properties').newDataInputStream())
 
 android {
-    defaultConfig {
-        buildConfigField "String", "GOOGLE_MAP_API_KEY", "\"${properties.getProperty('GOOGLE_MAP_API_KEY')}\""
-        manifestPlaceholders = [GOOGLE_MAP_API_KEY: "\"${properties.getProperty('GOOGLE_MAP_API_KEY')}\""]
-    }
 
     namespace "com.example.travelmaker"
     compileSdk flutter.compileSdkVersion
@@ -57,6 +53,9 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+//        buildConfigField "String", "GOOGLE_MAP_API_KEY", ""${properties.getProperties('GOOGLE_MAP_API_KEY')}""
+//        manifestPlaceholders = [GOOGLE_MAP_API_KEY: "\"${properties.getProperties('GOOGLE_MAP_API_KEY')}\""]
     }
 
     buildTypes {

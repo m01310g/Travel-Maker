@@ -16,7 +16,7 @@ class BottomNavController extends GetxController {
     switch (page) {
       case PageName.PLAN:
       // Upload라는 새로운 페이지를 만들어줌 => upload.dart
-        Get.to(() => const PlanPage());
+        Get.to(() => PlanPage());
         break;
       case PageName.HOME:
       case PageName.REGION_INFO:

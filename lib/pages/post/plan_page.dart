@@ -1,101 +1,96 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class PlanPage extends StatefulWidget {
-  const PlanPage({super.key});
-
   @override
-  _PlanPageState createState() => _PlanPageState();
+  State createState() => PlanPageState();
 }
 
-class _PlanPageState extends State<PlanPage> {
-  final List<Map<String, dynamic>> messages = [];
-  final TextEditingController _textController = TextEditingController();
+class PlanPageState extends State<PlanPage> {
+  final TextEditingController _controller = TextEditingController();
+  final List<String> _messages = [];
 
-  void _sendMessage(String message) {
-    setState(() {
-      // 사용자가 보낸 메시지를 오른쪽에 배치하도록 추가합니다.
-      messages.add({
-        'text': message,
-        'isUser': true,
-      });
+  void _sendMessage() async {
+    if (_controller.text.isNotEmpty) {
+      try {
+        var url = Uri.parse('http://192.168.58.19:5000/query');
+        var headers = {"Content-Type": "application/json"};
+        var body = jsonEncode({"query": _controller.text});
 
-      // 챗봇 응답을 추가합니다.
-      messages.add({
-        'text': '어디GO: Response to "$message"',
-        'isUser': false,
-      });
+        var response = await http.post(url, headers: headers, body: body);
 
-      _textController.clear();
-    });
+        if (response.statusCode == 200) {
+          var responseBody = jsonDecode(response.body);
+          setState(() {
+            _messages.add('User: ${_controller.text}');
+            _messages.add('Bot: ${responseBody['response']}');
+          });
+          _controller.clear();
+        } else {
+          print("HTTP Request failed with status: ${response.statusCode}");
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('어디GO'),
+        title: Text('Chat with Flask Server'),
       ),
       body: Column(
-        children: [
-          Expanded(
+        children: <Widget>[
+          Flexible(
             child: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final message = messages[index];
-                final isUser = message['isUser'] as bool;
-                final text = message['text'] as String;
-
-                return Align(
-                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: isUser ? Colors.blue : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12.0),
-                        border: isUser
-                            ? Border.all(color: Colors.blue)
-                            : Border.all(color: Colors.grey),
-                      ),
-                      child: Text(
-                        text,
-                        style: TextStyle(
-                          color: isUser ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
+              padding: EdgeInsets.all(8.0),
+              reverse: true,
+              itemCount: _messages.length,
+              itemBuilder: (_, int index) => _buildMessage(_messages[index]),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    decoration: const InputDecoration(
-                      hintText: '메시지를 입력하세요',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {
-                    final message = _textController.text.trim();
-                    if (message.isNotEmpty) {
-                      _sendMessage(message);
-                    }
-                  },
-                ),
-              ],
-            ),
+          Divider(height: 1.0),
+          Container(
+            decoration: BoxDecoration(color: Theme.of(context).cardColor),
+            child: _buildTextComposer(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMessage(String message) {
+    return ListTile(
+      title: Text(message),
+    );
+  }
+
+  Widget _buildTextComposer() {
+    return IconTheme(
+      data: IconThemeData(color: Theme.of(context).primaryColor),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          children: <Widget>[
+            Flexible(
+              child: TextField(
+                controller: _controller,
+                onSubmitted: (_) => _sendMessage(),
+                decoration: InputDecoration.collapsed(hintText: 'Send a message'),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 4.0),
+              child: IconButton(
+                icon: Icon(Icons.send),
+                onPressed: _sendMessage,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

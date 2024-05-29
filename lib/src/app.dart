@@ -16,12 +16,12 @@ class App extends GetView<BottomNavController> {
     return Scaffold(
       body: Obx(() => IndexedStack(
         index: controller.pageIndex.value,
-        children: const [
-          HomePage(),
-          RegionInfoPage(),
+        children: [
+          const HomePage(),
+          const RegionInfoPage(),
           PlanPage(),
-          CommunityPage(),
-          MyPage(),
+          const CommunityPage(),
+          const MyPage(),
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
