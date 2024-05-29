@@ -1,0 +1,10 @@
+flutter_native_splash:
+  color: "#FFFFFF"  # 배경색을 흰색으로 설정
+  image: assets/images/travel_maker_logo.png  # 스플래시 이미지 설정
+  android_gravity: center
+  ios_content_mode: center
+  fullscreen: true
+
+  android_12:
+    image: assets/images/travel_maker_logo.png  # Android 12 이상에서 사용할 스플래시 이미지 설정
+    icon_background_color: "#FFFFFF"  # 아이콘 배경색을 흰색으로 설정
