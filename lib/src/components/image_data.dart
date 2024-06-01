@@ -26,7 +26,7 @@ class IconsPath {
   static String get homeOn => 'assets/images/bottom_nav_home_on_icon.png';
   static String get communityOn => 'assets/images/img_3.png';
   static String get communityOff => 'assets/images/img_2.png';
-  static String get uploadIcon => 'assets/images/bottom_nav_upload_icon.jpg';
+  static String get chatbot_icon => 'assets/images/chatbot_icon.png';
   static String get regioninfoOff => 'assets/images/bottom_nav_regioninfo_off_icon.png';
   static String get regioninfoOn => 'assets/images/bottom_nav_regioninfo_on_icon.png';
   static String get mypageOn => 'assets/images/bottom_nav_mypage_on_icon.png';

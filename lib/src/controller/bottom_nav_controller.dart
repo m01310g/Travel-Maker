@@ -1,8 +1,3 @@
-/*
-  하단 내비게이션 바 조작
-  upload 버튼 누르면 새로운 페이지로 이동
- */
-
 import 'package:get/get.dart';
 import 'package:travelmaker/pages/post/plan_page.dart';
 
@@ -16,7 +11,7 @@ class BottomNavController extends GetxController {
     switch (page) {
       case PageName.PLAN:
       // Upload라는 새로운 페이지를 만들어줌 => upload.dart
-        Get.to(() => const PlanPage());
+        Get.to(() => PlanPage());
         break;
       case PageName.HOME:
       case PageName.REGION_INFO:

@@ -16,12 +16,12 @@ class App extends GetView<BottomNavController> {
     return Scaffold(
       body: Obx(() => IndexedStack(
         index: controller.pageIndex.value,
-        children: const [
-          HomePage(),
-          RegionInfoPage(),
+        children: [
+          const HomePage(),
+          const RegionInfoPage(),
           PlanPage(),
-          CommunityPage(),
-          MyPage(),
+          const CommunityPage(),
+          const MyPage(),
         ],
       )),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
@@ -42,8 +42,8 @@ class App extends GetView<BottomNavController> {
             label: 'regioninfo',
           ),
           BottomNavigationBarItem(
-            icon: ImageData(IconsPath.uploadIcon),
-            label: 'plan',
+            icon: ImageData(IconsPath.chatbot_icon),
+            label: 'chatbot',
           ),
           BottomNavigationBarItem(
             icon: controller.pageIndex.value == 3 ? ImageData(IconsPath.communityOn) : ImageData(IconsPath.communityOff),
