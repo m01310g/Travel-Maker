@@ -11,20 +11,51 @@ class PlanPageState extends State<PlanPage> {
   final TextEditingController _controller = TextEditingController();
   final List<String> _messages = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _getInitialMessage();
+  }
+
+  Future<void> _getInitialMessage() async {
+    try {
+      var url = Uri.parse('http://172.30.1.53:5000/init');
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        setState(() {
+          _messages.add('Bot: ${responseBody['message']}');
+        });
+      } else {
+        print("HTTP Request failed with status: ${response.statusCode}");
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   void _sendMessage() async {
     if (_controller.text.isNotEmpty) {
       try {
-        var url = Uri.parse('http://192.168.58.19:5000/query');
-        var headers = {"Content-Type": "application/json"};
         var body = jsonEncode({"query": _controller.text});
+        var url = Uri.parse('http://172.30.1.53:5000/query');
+        var headers = {"Content-Type": "application/json"};
 
         var response = await http.post(url, headers: headers, body: body);
 
         if (response.statusCode == 200) {
           var responseBody = jsonDecode(response.body);
+          print(responseBody);
+          var responseContent = responseBody['response'];
+          var userIntent = responseContent['user_intent'];
+          var location = responseContent['location'];
+          var subCategory = responseContent['sub_category'];
+          var duration = responseContent['duration'];
+
           setState(() {
             _messages.add('User: ${_controller.text}');
-            _messages.add('Bot: ${responseBody['response']}');
+            _messages.add('Bot: User Intent - $userIntent, Location - $location, Sub Category - $subCategory, Duration - $duration');
           });
           _controller.clear();
         } else {
@@ -40,7 +71,7 @@ class PlanPageState extends State<PlanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat with Flask Server'),
+        title: Text('어디GO'),
       ),
       body: Column(
         children: <Widget>[
